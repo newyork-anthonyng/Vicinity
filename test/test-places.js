@@ -21,30 +21,28 @@ describe('Google Places API', () => {
       });
   });
 
-  it('should get a Place on /places/<type> GET', (done) => {
+  it('should get Place Info on /places/<type> GET', (done) => {
     chai.request(server)
       .get('/places/bar')
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.a('object');
+
         res.body.SUCCESS.should.be.true;
-        res.body.RESULT.should.have.a.property('name');
-        res.body.RESULT.name.should.be.a('string');
+        res.body.should.have.a.property('name');
+        res.body.should.have.a.property('address');
+        res.body.should.have.a.property('open_now');
+        res.body.should.have.a.property('rating');
+        res.body.should.have.a.property('price_level');
+        res.body.should.have.a.property('picture_ref');
+        res.body.should.have.a.property('link');
 
-        res.body.RESULT.should.have.a.property('address');
-        res.body.RESULT.address.should.be.a('string');
+        res.body.name.should.be.a('string');
+        res.body.address.should.be.a('string');
+        res.body.picture_ref.should.be.a('string');
+        res.body.link.should.be.a('string');
 
-        res.body.RESULT.should.have.a.property('open_now');
-        res.body.RESULT.open_now.should.be.a('boolean');
-
-        res.body.RESULT.should.have.a.property('ratings');
-        res.body.RESULT.ratings.should.be.a('integer');
-        res.body.RESULT.ratings.should.be.within(1, 5);
-
-        res.body.RESULT.should.have.a.property('price_level');
-        res.body.RESULT.price_level.should.be.a('integer');
-        res.body.RESULT.price_level.should.be.within(0, 4);
         done();
       });
   });
