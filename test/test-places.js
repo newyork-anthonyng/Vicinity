@@ -43,6 +43,18 @@ describe('Google Places API', () => {
         res.body.picture_ref.should.be.a('string');
         res.body.link.should.be.a('string');
 
+        if(res.body.open_now != 'not shown') {
+          res.body.open_now.should.be.a('boolean');
+        }
+
+        if(res.body.price_level != 'not shown') {
+          res.body.price_level.should.be.within(0, 4);
+        }
+
+        if(res.body.rating != 'not shown') {
+          res.body.rating.should.be.within(1, 5);
+        }
+
         done();
       });
   });
