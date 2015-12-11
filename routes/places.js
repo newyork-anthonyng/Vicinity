@@ -4,6 +4,7 @@ const express    = require('express');
 const router     = express.Router();
 const request    = require('request');
 const bodyParser = require('body-parser');
+const Utility    = require('./_utility.js');
 
 router.get('/', (req, res, next) => {
   res.send({ SUCCESS: true });
@@ -16,7 +17,7 @@ router.get('/duration', findDuration);  // params = origin, destination
 // *** Return a place by Type *** //
 function findPlace(req, res) {
   // parse query string to retrieve origin and destination lat/lng
-  let queryData = parseQueryString(req.originalUrl);
+  let queryData = Utility.parseQueryString(req.originalUrl);
 
   // check to see if query string has 'type' and 'location'
   let myType = queryData['type'];
@@ -71,7 +72,7 @@ function findPlace(req, res) {
 
 // *** Return distance and time from origin to destination *** //
 function findDuration(req, res) {
-  let myLocations = parseQueryString(req.originalUrl);
+  let myLocations = Utility.parseQueryString(req.originalUrl);
   let origin      = myLocations['origin'];
   let destination = myLocations['destination'];
 
@@ -111,40 +112,6 @@ function findDuration(req, res) {
 function getPicture(reference) {
   return 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference='
           + reference + '&key=' + process.env.GOOGLE_PLACES_API_KEY;
-}
-
-// *** Parse through query string *** //
-// *** Need to parse for origin, destination, location and type *** //
-function parseQueryString(url) {
-  // parse through query string
-  let formattedUrl = url.replace(/%2C/g, ',');
-  let queryString  = formattedUrl.split('?')[1];
-
-  // check to see if there was a query string
-  if(!queryString) return false;
-
-  let queryArray   = queryString.split('&');
-
-  let myData = {};
-
-  for(let i = 0, j = queryArray.length; i < j; i++) {
-    let currentQuery = queryArray[i].split('=');
-
-    // 'location', 'origin' and 'destination' will have latitude/longitude keys
-    if(['location', 'origin', 'destination'].indexOf(currentQuery[0]) != -1) {
-      let currentLocation = currentQuery[1].split(',');
-      let latitude = currentLocation[0];
-      let longitude = currentLocation[1];
-
-      myData[currentQuery[0]] = {
-        latitude: latitude,
-        longitude: longitude
-      }
-    } else {
-      myData[currentQuery[0]] = currentQuery[1];
-    }
-  }
-  return myData;
 }
 
 
