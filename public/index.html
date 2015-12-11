@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js" ></script>
     <script src="./scripts/angular.js"></script>
     <script src="./js/controller.js"></script>
     <title>Vicinity</title>
@@ -11,5 +12,6 @@
   <body ng-controller="VicinityController as controller">
     <h1>Hello World</h1>
     <button id="location-button" ng-click="controller.test()">Get Location</button>
+    <div id="googleMap" style="width:500px;height:380px"></div>
   </body>
 </html>
