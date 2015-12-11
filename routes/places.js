@@ -75,6 +75,12 @@ function findDuration(req, res) {
   let origin      = myLocations['origin'];
   let destination = myLocations['destination'];
 
+  // check to see if query string has origin and destination
+  if(origin == undefined || destination == undefined) {
+    res.json({ SUCCESS: false, MESSAGE: 'Missing origin/destination '});
+    return false;
+  }
+
   let originLocation      = origin['latitude'] + ',' + origin['longitude'];
   let destinationLocation = destination['latitude']
                             + ',' + destination['longitude'];

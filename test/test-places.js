@@ -58,7 +58,7 @@ describe('Google Places API', () => {
 
         done();
       });
-  }); // closes test for /places/<type> GET
+  });
 
   it('should fail when missing information on GET /places/find', (done) => {
     chai.request(server)
@@ -73,7 +73,7 @@ describe('Google Places API', () => {
         done();
       });
   })
-  
+
   it('should get successful route on GET /places/duration', (done) => {
     chai.request(server)
       .get('/places/duration?origin=40.572966,-74.331664&destination=40.523000,-74.33144')
@@ -99,5 +99,19 @@ describe('Google Places API', () => {
         res.body.distance.should.eq(8292);
         done();
       });
-  }); // closes test for /duration GET
+  });
+
+  it('should fail when missing information on GET /places/duration', (done) => {
+    chai.request(server)
+      .get('/places/duration')
+      .end((err, res) => {
+        res.should.have.a.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.SUCCESS.should.be.false;
+        res.body.should.have.a.property('MESSAGE');
+        res.body.MESSAGE.should.be.a('string');
+        done();
+      });
+  });
 });
