@@ -10,8 +10,8 @@ router.get('/', (req, res, next) => {
 });
 
 // *** API Routes *** //
-router.get('/find', findPlace);
-router.get('/duration', findDuration);
+router.get('/find', findPlace); // params = location, type
+router.get('/duration', findDuration);  // params = origin, destination
 
 // *** Return a place by Type *** //
 function findPlace(req, res) {
