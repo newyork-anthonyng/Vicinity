@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "angular": "^1.4.8",
     "body-parser": "^1.14.1",
     "chai": "^3.4.1",
     "chai-http": "^1.0.0",
