@@ -33,4 +33,18 @@ describe('Open Weather API', () => {
         done();
       })
   });
+
+  it('should fail when missing information on GET /weather/find', (done) => {
+    chai.request(server)
+      .get('/weather/find')
+      .end((err, res) => {
+        res.should.have.a.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.SUCCESS.should.be.false;
+        res.body.should.have.a.property('MESSAGE');
+        res.body.MESSAGE.should.be.a('string');
+        done();
+      });
+  });
 });
