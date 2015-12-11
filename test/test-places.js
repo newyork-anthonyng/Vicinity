@@ -41,6 +41,7 @@ describe('Google Places API', () => {
         res.body.should.have.a.property('longitude');
 
         res.body.name.should.be.a('string');
+        res.body.name.should.be.eq('Rasoi II Restaurant');
         res.body.address.should.be.a('string');
         res.body.picture_ref.should.be.a('string');
         res.body.link.should.be.a('string');
@@ -61,5 +62,25 @@ describe('Google Places API', () => {
 
         done();
       });
-  });
+  }); // closes test for /places/<type> GET
+
+  it('should get JSON with duration-info on /duration GET', (done) => {
+    chai.request(server)
+      .get('/duration?origin=40.572966,-74.331664&destination=40.523000,-74.33144')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+
+        res.body.SUCCESS.should.be.true;
+        res.body.should.have.a.property('duration');
+        res.body.should.have.a.property('distance');
+
+        res.body.duration.should.be.a('number');
+        res.body.distance.should.be.a('number');
+
+        res.body.distance.should.eq(8292);
+        done();
+      });
+  }); // closes test for /duration GET
 });
