@@ -10,19 +10,31 @@ router.get('/', (req, res, next) => {
 });
 
 // *** API Routes *** //
-router.get('/find/:type', findPlaceByType);
+router.get('/find', findPlace);
 router.get('/duration', findDuration);
 
 // *** Return a place by Type *** //
-function findPlaceByType(req, res) {
-  let myType = req.params.type;
+function findPlace(req, res) {
+  // parse query string to retrieve origin and destination lat/lng
+  let queryData = parseQueryString(req.originalUrl);
 
-  let currentLocation = parseQueryString(req.originalUrl);
-  let currentLatitude = currentLocation['latitude'];
-  let currentLongitude = currentLocation['longitude'];
+  // check to see if query string has 'type' and 'location'
+  let myType = queryData['type'];
+  if (myType == undefined) {
+    res.json({ SUCCESS: false, MESSAGE: 'Missing type' });
+    return false;
+  }
+
+  if(queryData['location'] == undefined) {
+    res.json({ SUCCESS: false, MESSAGE: 'Missing location' });
+    return false;
+  }
+  let myLatitude = queryData['location']['latitude'];
+  let myLongitude = queryData['location']['longitude'];
+  let myLocation = myLatitude + ',' + myLongitude;
 
   let myUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' +
-  currentLatitude + ',' + currentLongitude + '&radius=500&types=' + myType + '&key=' + process.env.GOOGLE_PLACES_API_KEY;
+  myLocation + '&radius=500&types=' + myType + '&key=' + process.env.GOOGLE_PLACES_API_KEY;
 
   request(myUrl, (error, response, body) => {
     if(!error && response.statusCode == 200) {
@@ -59,8 +71,18 @@ function findPlaceByType(req, res) {
 
 // *** Return distance and time from origin to destination *** //
 function findDuration(req, res) {
-  // need to parseQueryString for origin and destination
-  let myUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=40.572966,-74.331664&destinations=40.523000,-74.33144&mode=walking&key=' + process.env.GOOGLE_MAPS_API_KEY;
+  let myLocations = parseQueryString(req.originalUrl);
+  let origin      = myLocations['origin'];
+  let destination = myLocations['destination'];
+
+  let originLocation      = origin['latitude'] + ',' + origin['longitude'];
+  let destinationLocation = destination['latitude']
+                            + ',' + destination['longitude'];
+
+  let myUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins='
+              + originLocation + '&destinations=' + destinationLocation
+              + '&mode=walking&key=' + process.env.GOOGLE_MAPS_API_KEY;
+
   request(myUrl, (error, response, body) => {
     if(!error && response.statusCode == 200) {
       let jsonData = JSON.parse(body)['rows'][0]['elements'][0];
@@ -81,33 +103,43 @@ function findDuration(req, res) {
 
 // *** Return a link to picture *** //
 function getPicture(reference) {
-  return 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference='+ reference + '&key=' + process.env.GOOGLE_PLACES_API_KEY;
+  return 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference='
+          + reference + '&key=' + process.env.GOOGLE_PLACES_API_KEY;
 }
 
 // *** Parse through query string *** //
-// *** Need to parse for origin, destination and location *** //
+// *** Need to parse for origin, destination, location and type *** //
 function parseQueryString(url) {
-  // example: www.google.com/base?location=10,20
-  // url will have a 'location' that we will parse for
+  // parse through query string
+  let formattedUrl = url.replace(/%2C/g, ',');
+  let queryString  = formattedUrl.split('?')[1];
 
-  // parse through URL for query string
-  let queryString = url.split('?')[1];
+  // check to see if there was a query string
+  if(!queryString) return false;
 
-  let location = queryString.split('=');
-  let latitude, longitude;
+  let queryArray   = queryString.split('&');
 
-  if(location[0] === 'location') {
-    let commaLocation  = location[1].replace(/%2C/g, ",");
-    let parsedLocation = commaLocation.split(',');
+  let myData = {};
 
-    latitude  = parsedLocation[0];
-    longitude = parsedLocation[1];
+  for(let i = 0, j = queryArray.length; i < j; i++) {
+    let currentQuery = queryArray[i].split('=');
+
+    // 'location', 'origin' and 'destination' will have latitude/longitude keys
+    if(['location', 'origin', 'destination'].indexOf(currentQuery[0]) != -1) {
+      let currentLocation = currentQuery[1].split(',');
+      let latitude = currentLocation[0];
+      let longitude = currentLocation[1];
+
+      myData[currentQuery[0]] = {
+        latitude: latitude,
+        longitude: longitude
+      }
+    } else {
+      myData[currentQuery[0]] = currentQuery[1];
+    }
   }
-
-  return {
-    latitude: latitude,
-    longitude: longitude
-  }
+  return myData;
 }
+
 
 module.exports = router;

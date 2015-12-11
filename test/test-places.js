@@ -9,11 +9,12 @@ const should   = chai.should();
 chai.use(chaiHttp);
 
 describe('Google Places API', () => {
-  it('test route', (done) => {
+
+  it('should get success on GET /places/find', (done) => {
     chai.request(server)
-      .get('/places/')
+      .get('/places/find?location=40.572966,-74.331664&type=bar')
       .end((err, res) => {
-        res.should.have.status(200);
+        res.should.have.a.status(200);
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.SUCCESS.should.be.true;
@@ -21,15 +22,10 @@ describe('Google Places API', () => {
       });
   });
 
-  it('should get JSON with place-info on /places/<type> GET', (done) => {
+  it('should get place information on GET /places/find', (done) => {
     chai.request(server)
-      .get('/places/find/bar?location=40.572966,-74.331664')
+      .get('/places/find?location=40.572966,-74.331664&type=bar')
       .end((err, res) => {
-        res.should.have.status(200);
-        res.should.be.json;
-        res.body.should.be.a('object');
-
-        res.body.SUCCESS.should.be.true;
         res.body.should.have.a.property('name');
         res.body.should.have.a.property('address');
         res.body.should.have.a.property('open_now');
@@ -64,15 +60,36 @@ describe('Google Places API', () => {
       });
   }); // closes test for /places/<type> GET
 
-  it('should get JSON with duration-info on /duration GET', (done) => {
+  it('should fail when missing information on GET /places/find', (done) => {
+    chai.request(server)
+      .get('/places/find')
+      .end((err, res) => {
+        res.should.have.a.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.SUCCESS.should.be.false;
+        res.body.should.have.a.property('MESSAGE');
+        res.body.MESSAGE.should.be.a('string');
+        done();
+      });
+  })
+  
+  it('should get successful route on GET /places/duration', (done) => {
     chai.request(server)
       .get('/places/duration?origin=40.572966,-74.331664&destination=40.523000,-74.33144')
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.a('object');
-
         res.body.SUCCESS.should.be.true;
+        done();
+      });
+  });
+
+  it('should get duration information on GET /places/duration', (done) => {
+    chai.request(server)
+      .get('/places/duration?origin=40.572966,-74.331664&destination=40.523000,-74.33144')
+      .end((err, res) => {
         res.body.should.have.a.property('duration');
         res.body.should.have.a.property('distance');
 
