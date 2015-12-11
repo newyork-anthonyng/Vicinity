@@ -12,10 +12,12 @@ router.get('/', (req, res, next) => {
 // *** API Routes *** //
 router.get('/:type', findPlaceByType);
 
-
 // *** Return a place by Type *** //
 function findPlaceByType(req, res) {
   let myType = req.params.type;
+  console.log(myType);
+  console.log(req.originalUrl);
+
   let myUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=' + myType + '&key=' + process.env.GOOGLE_PLACES_API_KEY;
 
   request(myUrl, (error, response, body) => {
@@ -31,6 +33,8 @@ function findPlaceByType(req, res) {
       let price_level = jsonData['price_level'] ? jsonData['price_level'] : 'not shown';
       let picture_ref = jsonData['photos'][0]['photo_reference'];
       let link        = jsonData['photos'][0]['html_attributions'][0];
+      let latitude    = jsonData['geometry']['location']['lat'];
+      let longitude   = jsonData['geometry']['location']['lng'];
 
       let myData = {
         SUCCESS:     true,
@@ -39,13 +43,19 @@ function findPlaceByType(req, res) {
         open_now:    open_now,
         rating:      rating,
         price_level: price_level,
-        picture_ref: picture_ref,
-        link:        link
+        picture_ref: getPicture(picture_ref),
+        link:        link,
+        latitude:    latitude,
+        longitude:   longitude
       }
 
       res.json(myData);
     }
   });
+}
+
+function getPicture(reference) {
+  return 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference='+ reference + '&key=' + process.env.GOOGLE_PLACES_API_KEY;
 }
 
 module.exports = router;

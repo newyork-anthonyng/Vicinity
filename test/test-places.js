@@ -21,7 +21,7 @@ describe('Google Places API', () => {
       });
   });
 
-  it('should get Place Info on /places/<type> GET', (done) => {
+  it('should get JSON with place-info on /places/<type> GET', (done) => {
     chai.request(server)
       .get('/places/bar')
       .end((err, res) => {
@@ -37,11 +37,15 @@ describe('Google Places API', () => {
         res.body.should.have.a.property('price_level');
         res.body.should.have.a.property('picture_ref');
         res.body.should.have.a.property('link');
+        res.body.should.have.a.property('latitude');
+        res.body.should.have.a.property('longitude');
 
         res.body.name.should.be.a('string');
         res.body.address.should.be.a('string');
         res.body.picture_ref.should.be.a('string');
         res.body.link.should.be.a('string');
+        res.body.latitude.should.be.a('number');
+        res.body.longitude.should.be.a('number');
 
         if(res.body.open_now != 'not shown') {
           res.body.open_now.should.be.a('boolean');
@@ -58,5 +62,4 @@ describe('Google Places API', () => {
         done();
       });
   });
-
 });
