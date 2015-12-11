@@ -10,7 +10,8 @@ router.get('/', (req, res, next) => {
 });
 
 // *** API Routes *** //
-router.get('/:type', findPlaceByType);
+router.get('/find/:type', findPlaceByType);
+router.get('/duration', findDuration);
 
 // *** Return a place by Type *** //
 function findPlaceByType(req, res) {
@@ -19,20 +20,14 @@ function findPlaceByType(req, res) {
   let currentLocation = parseQueryString(req.originalUrl);
   let currentLatitude = currentLocation['latitude'];
   let currentLongitude = currentLocation['longitude'];
-  console.log('location: ');
-  console.log(currentLatitude, currentLongitude);
+
   let myUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' +
   currentLatitude + ',' + currentLongitude + '&radius=500&types=' + myType + '&key=' + process.env.GOOGLE_PLACES_API_KEY;
-
-  console.log(myUrl);
 
   request(myUrl, (error, response, body) => {
     if(!error && response.statusCode == 200) {
       let jsonData = JSON.parse(body)['results'][0];
-      console.log('showing body');
-      console.log(jsonData['name']);
 
-      // // set up Place variables you need
       let name        = jsonData['name'];
       let address     = jsonData['vicinity'];
       let open_now    = jsonData['opening_hours'] ?
@@ -62,12 +57,35 @@ function findPlaceByType(req, res) {
   });
 }
 
+// *** Return distance and time from origin to destination *** //
+function findDuration(req, res) {
+  // need to parseQueryString for origin and destination
+  let myUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=40.572966,-74.331664&destinations=40.523000,-74.33144&mode=walking&key=' + process.env.GOOGLE_MAPS_API_KEY;
+  request(myUrl, (error, response, body) => {
+    if(!error && response.statusCode == 200) {
+      let jsonData = JSON.parse(body)['rows'][0]['elements'][0];
+
+      let duration = jsonData['duration']['value']; // in seconds
+      let distance = jsonData['distance']['value']; // in kilometers
+
+      let myData = {
+        SUCCESS:  true,
+        duration: duration,
+        distance: distance
+      }
+
+      res.json(myData);
+    }
+  });
+}
+
 // *** Return a link to picture *** //
 function getPicture(reference) {
   return 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference='+ reference + '&key=' + process.env.GOOGLE_PLACES_API_KEY;
 }
 
 // *** Parse through query string *** //
+// *** Need to parse for origin, destination and location *** //
 function parseQueryString(url) {
   // example: www.google.com/base?location=10,20
   // url will have a 'location' that we will parse for
@@ -81,7 +99,7 @@ function parseQueryString(url) {
   if(location[0] === 'location') {
     let commaLocation  = location[1].replace(/%2C/g, ",");
     let parsedLocation = commaLocation.split(',');
-    
+
     latitude  = parsedLocation[0];
     longitude = parsedLocation[1];
   }
