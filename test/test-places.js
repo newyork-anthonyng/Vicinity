@@ -23,7 +23,7 @@ describe('Google Places API', () => {
 
   it('should get JSON with place-info on /places/<type> GET', (done) => {
     chai.request(server)
-      .get('/places/bar')
+      .get('/places/bar?location=40.572966,-74.331664')
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
