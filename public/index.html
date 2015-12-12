@@ -16,13 +16,18 @@
     <h1>Vicinity</h1>
     <button id="location-button" ng-click="controller.getCurrentLocation()">Get Location</button>
     <button ng-click="controller.getCategoriesInformation()">Get Categories Information</button>
+
     <div id="current-location-map" style="width:500px;height:380px"></div>
     <div id="current-temperature"></div>
 
-    <div id="categories-places-information"></div>
-    <!-- <div ng-repeat="place in controller.categories">
-      <place name="{{ place }}"></place>
-    </div> -->
+    <ul>
+      <li ng-repeat="type in controller.categories">{{ type }}</li>
+    </ul>
 
+    <ul>
+      <li ng-repeat="(key, value) in controller.categoriesInformation">{{ key }}</li>
+    </ul>
+
+    <div id="categories-places-information"></div>
   </body>
 </html>

@@ -12,6 +12,8 @@ function placeView() {
   directive.replace = true;
   directive.templateUrl = '_placeView.html';
   directive.scope = {
+    type: '@',
+    success: '@',
     name: '@',
     address: '@',
     open_now: '@',

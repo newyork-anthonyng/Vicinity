@@ -74,8 +74,9 @@ app.controller('VicinityController', function($http) {
 
   // *** Get Places information for all Categories *** //
   this.getCategoriesInformation = function() {
+    console.log('button pressed');
+
     let deferreds = [];
-    // let data = {};
 
     for(let i = 0, j = this.categories.length; i < j; i++) {
       let myCurrentCategory = this.categories[i];
@@ -101,23 +102,24 @@ app.controller('VicinityController', function($http) {
 
   // *** Display Places information for all Categories onto DOM *** //
   this.displayCategoriesInformation = function(data) {
+
     let placesContainer = $('#categories-places-information');
     placesContainer.empty();
 
-    // go through each category
-
+    console.log('inside of displayCategoriesInformation');
+    console.log(data);
     for(let category in data) {
-      let myPlace = $('<ul>' + category + '<ul>');
-
-      // go through each information in each category
-      for(let placeInformation in data[category]) {
-        myPlace.append($('<li>' + placeInformation + ': ' + data[category][placeInformation] + '</li>'));
-      }
+      let myPlace = $('<place success=' + data[category]['SUCCESS'] + '></place>');
+      // let myPlace = $('<ul>' + category + '<ul>');
+      //
+      // // go through each information in each category
+      // for(let placeInformation in data[category]) {
+      //   myPlace.append($('<li>' + placeInformation + ': ' + data[category][placeInformation] + '</li>'));
+      // }
 
       placesContainer.append(myPlace);
     }
-
   };
 
-  this.getCurrentLocation();
+  this.getCurrentLocation();  // get location on page load
 }); // end of VicinityController
