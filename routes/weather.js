@@ -24,7 +24,7 @@ function findWeather(req, res) {
   }
 
   let myLatitude = myLocation['location']['latitude'];
-  let myLongitude = myLocation['location']['latitude'];
+  let myLongitude = myLocation['location']['longitude'];
 
   let myUrl = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
               myLatitude + '&lon=' + myLongitude + '&units=imperial&APPID=' +

@@ -29,7 +29,6 @@ app.controller('VicinityController', function($http) {
     this.currentLatitude  = myLatitude;
     this.currentLongitude = myLongitude;
 
-    // weather test
     this.getCurrentWeather(myLatitude, myLongitude);
 
     // create map and with marker on current location
