@@ -16,6 +16,9 @@
     <div id="current-location-map" style="width:500px;height:380px"></div>
     <div id="current-temperature"></div>
 
-    <place name="gaby"></place>
+    <div ng-repeat="place in controller.categories">
+      <place name="{{ place }}"></place>
+    </div>
+
   </body>
 </html>

@@ -12,7 +12,13 @@ function placeView() {
   directive.replace = true;
   directive.templateUrl = '_placeView.html';
   directive.scope = {
-    name: '@'
+    name: '@',
+    address: '@',
+    open_now: '@',
+    rating: '@',
+    price_level: '@',
+    picture_ref: '@',
+    link: '@'
   }
 
   return directive;
