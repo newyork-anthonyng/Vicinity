@@ -41,7 +41,7 @@ app.controller('VicinityController', function($http) {
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
-    let myMap  = document.getElementById('current-location-map');
+    let myMap  = $('#current-location-map')[0];
     let map    = new google.maps.Map(myMap, mapProp);
     let marker = new google.maps.Marker({ position: center });
     marker.setMap(map);
@@ -52,14 +52,19 @@ app.controller('VicinityController', function($http) {
 
     $http.get(myUrl)
       .then((response) => {
-        displayWeather(response.data);
+        this.displayWeather(response.data);
       });
   };
 
   // *** Display weather information on page *** //
   this.displayWeather = function(weatherInformation) {
-    this.degrees = weatherInformation['degrees'];
-    this.description = weatherInformation['description'];
-  }
+    let degrees     = weatherInformation['degrees'];
+    let description = weatherInformation['description'];
+    let weatherText = 'Current weather is ' + degrees + ', ' + description;
+
+    let myWeatherDiv = $('#current-temperature');
+    let myInfo       = $('<p>' + weatherText + '</p>');
+    myWeatherDiv.empty().append(myInfo);
+  };
 
 }); // end of VicinityController
