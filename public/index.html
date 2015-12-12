@@ -6,6 +6,7 @@
     <script src="https://maps.googleapis.com/maps/api/js" ></script>
     <script src="./scripts/angular.js"></script>
     <script src="./js/controller.js"></script>
+    <script src="./js/placeView.js"></script>
     <title>Vicinity</title>
 
   </head>
@@ -14,5 +15,7 @@
     <button id="location-button" ng-click="controller.getCurrentLocation()">Get Location</button>
     <div id="current-location-map" style="width:500px;height:380px"></div>
     <div id="current-temperature"></div>
+
+    <place name="gaby"></place>
   </body>
 </html>
