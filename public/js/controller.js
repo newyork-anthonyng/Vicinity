@@ -9,6 +9,12 @@ app.controller('VicinityController', function($http) {
   this.categories = ['bar', 'cafe', 'casino', 'convenience_store',
                      'liquor_store', 'museum', 'park', 'restaurant',
                      'shopping_mall', 'points_of_interest'];
+  // this.categories = ['convenience_store', 'cafe'];
+
+
+  // object will have keys of the categories, and values will be objects that
+  // contain Places information retrieved from '/places/find' route
+  this.categoriesInformation = {};
 
   // *** use browser to get current location *** //
   this.getCurrentLocation = function() {
@@ -66,4 +72,37 @@ app.controller('VicinityController', function($http) {
     myWeatherDiv.empty().append(myInfo);
   };
 
+  // *** Get Places information for all Categories *** //
+  this.getCategoriesInformation = function() {
+    // deferreds will be an array of ajax requests
+    let deferreds = [];
+    // data will hold all of our places information
+    let data = {};
+    
+    // loop through all categories
+    for(let i = 0, j = this.categories.length; i < j; i++) {
+      // make http request for each of the categories
+      let myUrl = '/places/find?location=' + this.currentLatitude + ',' + this.currentLongitude + '&type=' + this.categories[i];
+      let newRequest = $.ajax({
+        url: myUrl
+      }).done((response) => {
+        data[this.categories[i]] = response;
+      });
+
+      deferreds.push(newRequest);
+    }
+
+    $.when.apply($, deferreds).done(() => {
+      console.log(data);
+    });
+
+    // when http request is done, update the categoriesInformation
+    // key will be the category name
+    // value will be an object with the "Places" information retrieved from the ajax request
+
+    // update the DOM when information is retrieved
+
+  };
+
+  this.getCurrentLocation();
 }); // end of VicinityController
