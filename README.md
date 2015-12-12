@@ -1,6 +1,6 @@
 ## Vicinity
 
-### Currently not deployed
+### [Link to App hosted on Heroku](https://vicinity1.herokuapp.com/)
 
 ### Summary
 When traveling to a new area, Vicinity will give you a quick glance of what's around you. Whether it's the nearest bar or park, Vicinity will show you.
