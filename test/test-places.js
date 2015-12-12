@@ -21,6 +21,20 @@ describe('Google Places API', () => {
       });
   });
 
+  it('should get failure when Zero Results on GET /places/find', (done) => {
+    chai.request(server)
+      .get('/places/find?location=40.7399443,-73.9895988&type=casino')
+      .end((err, res) => {
+        res.should.have.a.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.SUCCESS.should.be.false;
+        res.body.should.have.a.property('MESSAGE');
+        res.body.MESSAGE.should.eq('Zero Results Found');
+        done();
+      });
+  });
+
   it('should get place information on GET /places/find', (done) => {
     chai.request(server)
       .get('/places/find?location=40.572966,-74.331664&type=bar')

@@ -35,11 +35,21 @@ function findPlace(req, res) {
   let myLocation = myLatitude + ',' + myLongitude;
 
   let myUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' +
-  myLocation + '&radius=500&types=' + myType + '&key=' + process.env.GOOGLE_PLACES_API_KEY;
+  myLocation + '&radius=1000&types=' + myType + '&key=' + process.env.GOOGLE_PLACES_API_KEY;
+
+  console.log('*************');
+  console.log('printing url');
+  console.log(myUrl);
 
   request(myUrl, (error, response, body) => {
     if(!error && response.statusCode == 200) {
       let jsonData = JSON.parse(body)['results'][0];
+
+      // check if there are any results
+      if(jsonData == undefined) {
+        res.json({ SUCCESS: false, MESSAGE: 'Zero Results Found' });
+        return false;
+      }
 
       let name        = jsonData['name'];
       let address     = jsonData['vicinity'];
@@ -47,8 +57,10 @@ function findPlace(req, res) {
                         jsonData['opening_hours']['open_now'] : 'not shown';
       let rating      = jsonData['rating'];
       let price_level = jsonData['price_level'] ? jsonData['price_level'] : 'not shown';
-      let picture_ref = jsonData['photos'][0]['photo_reference'];
-      let link        = jsonData['photos'][0]['html_attributions'][0];
+      let picture_ref = jsonData['photos'] ?
+                        jsonData['photos'][0]['photo_reference'] : 'not shown';
+      let link        = jsonData['photos'] ?
+                        jsonData['photos'][0]['html_attributions'][0] : 'not shown';
       let latitude    = jsonData['geometry']['location']['lat'];
       let longitude   = jsonData['geometry']['location']['lng'];
 
