@@ -11,7 +11,7 @@ router.get('/', (req, res, next) => {
 });
 
 // *** API Routes *** //
-router.get('/find', findWeather);
+router.get('/find', findWeather); // requires 'location' as lat/lng in query
 
 // *** Return weather by location *** //
 function findWeather(req, res) {
