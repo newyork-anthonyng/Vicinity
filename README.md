@@ -40,4 +40,4 @@ When traveling to a new area, Vicinity will give you a quick glance of what's ar
     * distance
 
 ### Wireframes
-![Mobile Wireframe](./public/Wireframe/Mobile_Wireframe.png)
+![Mobile Wireframe](./public/assets/Mobile_Wireframe.png)
