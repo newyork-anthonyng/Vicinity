@@ -29,6 +29,7 @@ describe('Open Weather API', () => {
         res.body.should.have.a.property('description');
 
         res.body.degrees.should.be.a('number');
+        res.body.degrees.should.be.within(-150, 150);
         res.body.description.should.be.a('string');
         done();
       })

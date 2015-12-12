@@ -52,8 +52,14 @@ app.controller('VicinityController', function($http) {
 
     $http.get(myUrl)
       .then((response) => {
-        console.log(response.data);
+        displayWeather(response.data);
       });
   };
+
+  // *** Display weather information on page *** //
+  this.displayWeather = function(weatherInformation) {
+    this.degrees = weatherInformation['degrees'];
+    this.description = weatherInformation['description'];
+  }
 
 }); // end of VicinityController
