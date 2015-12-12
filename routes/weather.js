@@ -27,7 +27,7 @@ function findWeather(req, res) {
   let myLongitude = myLocation['location']['latitude'];
 
   let myUrl = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
-              myLatitude + '&lon=' + myLongitude + '&APPID=' +
+              myLatitude + '&lon=' + myLongitude + '&units=imperial&APPID=' +
               process.env.OPEN_WEATHER_API_KEY;
 
   request(myUrl, (error, response, body) => {
