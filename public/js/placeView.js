@@ -3,8 +3,6 @@
 angular.module('Vicinity')
   .directive('place', placeView);
 
-console.log('place view loaded');
-
 function placeView() {
   let directive = {};
 

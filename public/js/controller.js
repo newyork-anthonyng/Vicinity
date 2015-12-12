@@ -22,8 +22,10 @@ app.controller('VicinityController', function($http) {
       // use .bind(this) to be able to access Controller variables
       navigator.geolocation.getCurrentPosition(this.displayPositionOnMap.bind(this));
     } else {
-      console.log('Geolocation is not supported by this browser. \
-      Please make sure to enable location.');
+      let myMap = $('#current-location-map');
+      let errorMessage = $('<p>Geolocation is not supported by this browser. \
+                        Please make sure to enable location services.</p>');
+      myMap.append(errorMessage);
     }
   };
 
@@ -106,16 +108,13 @@ app.controller('VicinityController', function($http) {
     let placesContainer = $('#categories-places-information');
     placesContainer.empty();
 
-    console.log('inside of displayCategoriesInformation');
-    console.log(data);
     for(let category in data) {
-      let myPlace = $('<place success=' + data[category]['SUCCESS'] + '></place>');
-      // let myPlace = $('<ul>' + category + '<ul>');
-      //
-      // // go through each information in each category
-      // for(let placeInformation in data[category]) {
-      //   myPlace.append($('<li>' + placeInformation + ': ' + data[category][placeInformation] + '</li>'));
-      // }
+      let myPlace = $('<ul>' + category + '<ul>');
+
+      // go through each information in each category
+      for(let placeInformation in data[category]) {
+        myPlace.append($('<li>' + placeInformation + ': ' + data[category][placeInformation] + '</li>'));
+      }
 
       placesContainer.append(myPlace);
     }
