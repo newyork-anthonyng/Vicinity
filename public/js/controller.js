@@ -74,33 +74,45 @@ app.controller('VicinityController', function($http) {
 
   // *** Get Places information for all Categories *** //
   this.getCategoriesInformation = function() {
-    // deferreds will be an array of ajax requests
     let deferreds = [];
-    // data will hold all of our places information
-    let data = {};
-    
-    // loop through all categories
+    let data      = {};
+
     for(let i = 0, j = this.categories.length; i < j; i++) {
-      // make http request for each of the categories
-      let myUrl = '/places/find?location=' + this.currentLatitude + ',' + this.currentLongitude + '&type=' + this.categories[i];
-      let newRequest = $.ajax({
-        url: myUrl
-      }).done((response) => {
-        data[this.categories[i]] = response;
-      });
+      let myUrl = '/places/find?location=' + this.currentLatitude + ',' +
+                  this.currentLongitude + '&type=' + this.categories[i];
+
+      let newRequest =
+        $.ajax({
+          url: myUrl
+        }).done((response) => {
+          data[this.categories[i]] = response;
+        });
 
       deferreds.push(newRequest);
     }
 
+    // perform actions have all ajax requests have resolved
     $.when.apply($, deferreds).done(() => {
-      console.log(data);
+      this.displayCategoriesInformation(data);
     });
+  };
 
-    // when http request is done, update the categoriesInformation
-    // key will be the category name
-    // value will be an object with the "Places" information retrieved from the ajax request
+  // *** Display Places information for all Categories onto DOM *** //
+  this.displayCategoriesInformation = function(data) {
+    let placesContainer = $('#categories-places-information');
+    placesContainer.empty();
 
-    // update the DOM when information is retrieved
+    // go through each category
+    for(let category in data) {
+      let myPlace = $('<ul>' + category + '<ul>');
+
+      // go through each information in each category
+      for(let placeInformation in data[category]) {
+        myPlace.append($('<li>' + placeInformation + ': ' + data[category][placeInformation] + '</li>'));
+      }
+
+      placesContainer.append(myPlace);
+    }
 
   };
 
