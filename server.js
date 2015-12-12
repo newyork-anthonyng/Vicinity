@@ -7,10 +7,13 @@ const logger   = require('morgan');
 const placesRoutes  = require('./routes/places.js');
 const weatherRoutes = require('./routes/weather.js');
 
+app.use(logger('dev'));
+app.use(express.static('public'));
+app.use('/scripts', express.static(__dirname + '/node_modules/angular'));
+
+// *** API Routes *** //
 app.use('/places', placesRoutes);
 app.use('/weather', weatherRoutes);
-app.use('/scripts', express.static(__dirname + '/node_modules/angular'));
-app.use(express.static('public'));
 
 app.get('/', (req, res) => {
   res.send({ SUCCESS: true });
