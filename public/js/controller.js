@@ -75,17 +75,19 @@ app.controller('VicinityController', function($http) {
   // *** Get Places information for all Categories *** //
   this.getCategoriesInformation = function() {
     let deferreds = [];
-    let data      = {};
+    // let data = {};
 
     for(let i = 0, j = this.categories.length; i < j; i++) {
+      let myCurrentCategory = this.categories[i];
+
       let myUrl = '/places/find?location=' + this.currentLatitude + ',' +
-                  this.currentLongitude + '&type=' + this.categories[i];
+                  this.currentLongitude + '&type=' + myCurrentCategory;
 
       let newRequest =
         $.ajax({
           url: myUrl
         }).done((response) => {
-          data[this.categories[i]] = response;
+          this.categoriesInformation[myCurrentCategory] = response;
         });
 
       deferreds.push(newRequest);
@@ -93,7 +95,7 @@ app.controller('VicinityController', function($http) {
 
     // perform actions have all ajax requests have resolved
     $.when.apply($, deferreds).done(() => {
-      this.displayCategoriesInformation(data);
+      this.displayCategoriesInformation(this.categoriesInformation);
     });
   };
 
@@ -103,6 +105,7 @@ app.controller('VicinityController', function($http) {
     placesContainer.empty();
 
     // go through each category
+
     for(let category in data) {
       let myPlace = $('<ul>' + category + '<ul>');
 
