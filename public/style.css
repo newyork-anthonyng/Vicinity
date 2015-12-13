@@ -10,8 +10,14 @@
   background-color: blue;
 }
 
-#touch {
+#route {
+  color:white;
+  font-size:2em;
   width: 4em;
   height: 4em;
   background-color: orange;
+}
+
+#message {
+  color:black;
 }

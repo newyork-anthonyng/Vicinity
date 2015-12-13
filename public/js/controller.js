@@ -7,6 +7,14 @@ function VicinityController($http) {
   this.test = function() {
     $('#test').toggleClass('tap');
   };
+
+  this.route = function() {
+    $http.get('/test')
+      .then(function(response) {
+        var messageDiv = $('#message');
+        messageDiv.empty().append('<p>' + response.data.MESSAGE + '</p>');
+      });
+  };
 } // ends controller
 
 // app.controller('VicinityController', function($http) {

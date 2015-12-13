@@ -20,6 +20,10 @@ app.get('/', (req, res) => {
   res.send({ SUCCESS: true });
 });
 
+app.get('/test', (req, res) => {
+  res.send({ MESSAGE: 'GET /test' });
+});
+
 const server = app.listen(process.env.PORT || 3000, () => {
   console.log('Server is running.');
 });
