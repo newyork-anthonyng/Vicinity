@@ -1,3 +1,14 @@
+$(document).on('pageinit', function() {
+  alert('Hello World');
+
+  $('#test').bind('tap', tapHandler);
+});
+
+function tapHandler() {
+  $('#test').toggleClass('tap');
+}
+
+// *** Angular Controller *** //
 var app = angular.module('Vicinity', []);
 
 app.controller('VicinityController', function($http) {
@@ -118,7 +129,3 @@ app.controller('VicinityController', function($http) {
 
   // this.getCurrentLocation();  // get location on page load
 }); // end of VicinityController
-
-$(document).on('pageinit', function() {
-  alert('Hello World');
-});
