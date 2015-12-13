@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" type="text/css" href="./style.css">
     <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
@@ -19,8 +19,11 @@
   <body ng-controller="VicinityController as controller">
     <h1>Test 1</h1>
     <div id="test" ng-click="controller.test()">Test</div>
-    <idv id="route" ng-click="controller.route()">Get Route</div>
+    <div id="route" ng-click="controller.route()">Get Route</div>
     <div id="message"></div>
+    <br><br>
+    <div id="route" ng-click="controller.getCurrentLocation()">Get Map</div>
+    <div id="map"></div>
   </body>
   <body>
   </body>

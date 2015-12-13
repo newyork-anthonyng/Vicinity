@@ -15,6 +15,19 @@ function VicinityController($http) {
         messageDiv.empty().append('<p>' + response.data.MESSAGE + '</p>');
       });
   };
+
+  this.getCurrentLocation = function() {
+    if(navigator && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.displayMap);
+    }
+  };
+
+  this.displayMap = function(position) {
+    var myText = 'latitude: ' + position.coords.latitude +
+                 'longitude: ' + position.coords.longitude;
+
+    $('#map').empty().append($('<p>' + myText + '</p>'));
+  };
 } // ends controller
 
 // app.controller('VicinityController', function($http) {
