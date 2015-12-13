@@ -1,5 +1,5 @@
 // *** Angular Controller *** //
-var app = angular.module('Vicinity', []);
+var app = angular.module('Vicinity', ['ngTouch']);
 
 app.controller('VicinityController', VicinityController);
 

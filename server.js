@@ -10,6 +10,7 @@ const weatherRoutes = require('./routes/weather.js');
 app.use(logger('dev'));
 app.use(express.static('public'));
 app.use('/scripts', express.static(__dirname + '/node_modules/angular'));
+app.use('/scripts', express.static(__dirname + '/node_modules/angular-touch'));
 
 // *** API Routes *** //
 app.use('/places', placesRoutes);
