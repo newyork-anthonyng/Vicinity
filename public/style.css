@@ -1,4 +1,6 @@
 #test {
+  color:white;
+  font-size:2em;
   width: 4em;
   height: 4em;
   background-color: green;
@@ -11,5 +13,5 @@
 #touch {
   width: 4em;
   height: 4em;
-  background-color: orange;  
+  background-color: orange;
 }
