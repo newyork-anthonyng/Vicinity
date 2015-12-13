@@ -1,6 +1,4 @@
-'use strict'
-
-let app = angular.module('Vicinity', []);
+var app = angular.module('Vicinity', []);
 
 app.controller('VicinityController', function($http) {
   this.currentLatitude;
@@ -9,8 +7,6 @@ app.controller('VicinityController', function($http) {
   this.categories = ['bar', 'cafe', 'casino', 'convenience_store',
                      'liquor_store', 'museum', 'park', 'restaurant',
                      'shopping_mall', 'points_of_interest'];
-  // this.categories = ['convenience_store', 'cafe'];
-
 
   // object will have keys of the categories, and values will be objects that
   // contain Places information retrieved from '/places/find' route
@@ -22,8 +18,8 @@ app.controller('VicinityController', function($http) {
       // use .bind(this) to be able to access Controller variables
       navigator.geolocation.getCurrentPosition(this.displayPositionOnMap.bind(this));
     } else {
-      let myMap = $('#current-location-map');
-      let errorMessage = $('<p>Geolocation is not supported by this browser. \
+      var myMap = $('#current-location-map');
+      var errorMessage = $('<p>Geolocation is not supported by this browser. \
                         Please make sure to enable location services.</p>');
       myMap.append(errorMessage);
     }
@@ -32,30 +28,30 @@ app.controller('VicinityController', function($http) {
   // *** Display location onto map *** //
   this.displayPositionOnMap = function(position) {
     // get coordinates and save into controller
-    let myLatitude  = position.coords.latitude;
-    let myLongitude = position.coords.longitude;
+    var myLatitude  = position.coords.latitude;
+    var myLongitude = position.coords.longitude;
     this.currentLatitude  = myLatitude;
     this.currentLongitude = myLongitude;
 
     this.getCurrentWeather(myLatitude, myLongitude);
 
     // create map and with marker on current location
-    let center = new google.maps.LatLng(myLatitude, myLongitude);
+    var center = new google.maps.LatLng(myLatitude, myLongitude);
 
-    let mapProp = {
+    var mapProp = {
       center:    center,
       zoom:      16,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
-    let myMap  = $('#current-location-map')[0];
-    let map    = new google.maps.Map(myMap, mapProp);
-    let marker = new google.maps.Marker({ position: center });
+    var myMap  = $('#current-location-map')[0];
+    var map    = new google.maps.Map(myMap, mapProp);
+    var marker = new google.maps.Marker({ position: center });
     marker.setMap(map);
   };
 
   this.getCurrentWeather = function(latitude, longitude) {
-    let myUrl = '/weather/find?location='+ latitude + ',' + longitude;
+    var myUrl = '/weather/find?location='+ latitude + ',' + longitude;
 
     $http.get(myUrl)
       .then((response) => {
@@ -65,12 +61,12 @@ app.controller('VicinityController', function($http) {
 
   // *** Display weather information on page *** //
   this.displayWeather = function(weatherInformation) {
-    let degrees     = weatherInformation['degrees'];
-    let description = weatherInformation['description'];
-    let weatherText = 'Current weather is ' + degrees + ', ' + description;
+    var degrees     = weatherInformation['degrees'];
+    var description = weatherInformation['description'];
+    var weatherText = 'Current weather is ' + degrees + ', ' + description;
 
-    let myWeatherDiv = $('#current-temperature');
-    let myInfo       = $('<p>' + weatherText + '</p>');
+    var myWeatherDiv = $('#current-temperature');
+    var myInfo       = $('<p>' + weatherText + '</p>');
     myWeatherDiv.empty().append(myInfo);
   };
 
@@ -78,18 +74,18 @@ app.controller('VicinityController', function($http) {
   this.getCategoriesInformation = function() {
     console.log('button pressed');
 
-    let deferreds = [];
+    var deferreds = [];
 
-    for(let i = 0, j = this.categories.length; i < j; i++) {
-      let myCurrentCategory = this.categories[i];
+    for(var i = 0, j = this.categories.length; i < j; i++) {
+      var myCurrentCategory = this.categories[i];
 
-      let myUrl = '/places/find?location=' + this.currentLatitude + ',' +
+      var myUrl = '/places/find?location=' + this.currentLatitude + ',' +
                   this.currentLongitude + '&type=' + myCurrentCategory;
 
-      let newRequest =
+      var newRequest =
         $.ajax({
           url: myUrl
-        }).done((response) => {
+        }).done(function(response) {
           this.categoriesInformation[myCurrentCategory] = response;
         });
 
@@ -105,14 +101,14 @@ app.controller('VicinityController', function($http) {
   // *** Display Places information for all Categories onto DOM *** //
   this.displayCategoriesInformation = function(data) {
 
-    let placesContainer = $('#categories-places-information');
+    var placesContainer = $('#categories-places-information');
     placesContainer.empty();
 
-    for(let category in data) {
-      let myPlace = $('<ul>' + category + '<ul>');
+    for(var category in data) {
+      var myPlace = $('<ul>' + category + '<ul>');
 
       // go through each information in each category
-      for(let placeInformation in data[category]) {
+      for(var placeInformation in data[category]) {
         myPlace.append($('<li>' + placeInformation + ': ' + data[category][placeInformation] + '</li>'));
       }
 
@@ -120,5 +116,9 @@ app.controller('VicinityController', function($http) {
     }
   };
 
-  this.getCurrentLocation();  // get location on page load
+  // this.getCurrentLocation();  // get location on page load
 }); // end of VicinityController
+
+$(document).on('pageinit', function() {
+  alert('Hello World');
+});
