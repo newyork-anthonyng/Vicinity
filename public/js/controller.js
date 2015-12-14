@@ -17,6 +17,8 @@ function VicinityController($http) {
     if(navigator && navigator.geolocation) {
       // use .bind(this) to be able to access Controller variables
       navigator.geolocation.getCurrentPosition(this.displayMap.bind(this));
+    } else {
+      alert('Please turn on location services in your browser.');
     }
   };
 
@@ -25,17 +27,19 @@ function VicinityController($http) {
     this.currentLatitude  = position.coords.latitude;
     this.currentLongitude = position.coords.longitude;
 
-    var myCenter = new google.maps.LatLng(this.currentLatitude, this.currentLongitude);
+    var myCenter = new google.maps
+                  .LatLng(this.currentLatitude, this.currentLongitude);
+
     var mapProp = {
-      center: myCenter,
-      zoom: 15,
+      center:    myCenter,
+      zoom:      15,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
     var map = new google.maps.Map($('#map')[0], mapProp);
 
     var marker = new google.maps.Marker({
-      position: myCenter,
+      position:  myCenter,
       animation: google.maps.Animation.BOUNCE
     });
     marker.setMap(map);
@@ -63,14 +67,6 @@ function VicinityController($http) {
   };
 
   this.getCategoriesInformation = function() {
-    // test code. Display all of the categories information onto DOM
-    var categoriesDiv = $('#categories').empty();
-
-    for(var i = 0, j = this.categories.length; i < j; i++) {
-      var myCategory = $('<p>' + this.categories[i] + '</p>');
-      categoriesDiv.append(myCategory);
-    }
-
     var deferreds = [];
 
     for(var i = 0, j = this.categories.length; i < j; i++) {
@@ -78,87 +74,36 @@ function VicinityController($http) {
       var myUrl = '/places/find?location=' + this.currentLatitude + ',' +
                   this.currentLongitude + '&type=' + myCurrentCategory;
 
+      // use 'self' to keep scope of this inside of AJAX call
       var self = this;
+
       var newRequest =
         $.ajax({
           url: myUrl
         }).done(function(response) {
-          // update controller's myCategoriesInformation
           self.categoriesInformation[response.type] = response;
         });
 
       deferreds.push(newRequest);
-    }   // end of for-loop
+    } // end of for-loop
 
-    var self = this;
     $.when.apply($, deferreds).done(function() {
+      // display information for each category
       for(var key in self.categoriesInformation) {
-        alert(key + ': ' + self.categoriesInformation[key]['name']);
+        self.displayCategoriesInformation(self.categoriesInformation[key]);
       }
     });
 
   };
 
+  this.displayCategoriesInformation = function(data) {
+    alert(data.type);
+  };
+
 } // ends VicinityController
 
 // app.controller('VicinityController', function($http) {
-//
-//   // object will have keys of the categories, and values will be objects that
-//   // contain Places information retrieved from '/places/find' route
-//   this.categoriesInformation = {};
-//
-//   // *** Get Places information for all Categories *** //
-//   this.getCategoriesInformation = function() {
-//     console.log('button pressed');
-//
-//     var deferreds = [];
-//
-//     for(var i = 0, j = this.categories.length; i < j; i++) {
-//       var myCurrentCategory = this.categories[i];
-//
-//       var myUrl = '/places/find?location=' + this.currentLatitude + ',' +
-//                   this.currentLongitude + '&type=' + myCurrentCategory;
-//
-//       var newRequest =
-//         $.ajax({
-//           url: myUrl
-//         }).done(function(response) {
-//           this.categoriesInformation[myCurrentCategory] = response;
-//         });
-//
-//       deferreds.push(newRequest);
-//     }
-//
-//     // perform actions have all ajax requests have resolved
-//     $.when.apply($, deferreds).done(() => {
-//       this.displayCategoriesInformation(this.categoriesInformation);
-//     });
-//   };
-//
-// // *** Display weather information on page *** //
-// this.displayWeather = function(weatherInformation) {
-//   var degrees     = weatherInformation['degrees'];
-//   var description = weatherInformation['description'];
-//   var weatherText = 'Current weather is ' + degrees + ', ' + description;
-//
-//   var myWeatherDiv = $('#weather');
-//   var myInfo       = $('<p>' + weatherText + '</p>');
-//   myWeatherDiv.empty().append(myInfo);
-// };
 
-// this.getCurrentWeather = function(latitude, longitude) {
-//   var myUrl = '/weather/find?location='+ latitude + ',' + longitude;
-//
-//   $http.get(myUrl)
-//     .then((response) => {
-//       // this.displayWeather(response.data);
-//       console.log(response.data);
-//       alert('degrees: ' + response.data.degrees +
-//             ' description: ' + response.data.description);
-//     });
-// };
-
-//
 //   // *** Display Places information for all Categories onto DOM *** //
 //   this.displayCategoriesInformation = function(data) {
 //
