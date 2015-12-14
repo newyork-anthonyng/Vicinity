@@ -1,23 +1,7 @@
-#test {
-  color:white;
-  font-size:2em;
-  width: 4em;
-  height: 4em;
-  background-color: green;
-}
-
-#test.tap {
-  background-color: blue;
-}
-
-#route {
+#map-button {
   color:white;
   font-size:2em;
   width: 4em;
   height: 4em;
   background-color: orange;
-}
-
-#message {
-  color:black;
 }

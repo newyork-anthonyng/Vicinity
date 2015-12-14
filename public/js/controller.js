@@ -31,7 +31,7 @@ function VicinityController($http) {
     };
 
     var map = new google.maps.Map($('#map')[0], mapProp);
-    
+
     var marker = new google.maps.Marker({
       position: myCenter,
       animation: google.maps.Animation.BOUNCE
