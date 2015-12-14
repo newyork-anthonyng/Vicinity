@@ -13,7 +13,7 @@ function VicinityController($http) {
 
   this.getCurrentLocation = function() {
     if(navigator && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.displayMap);
+      navigator.geolocation.getCurrentPosition(this.displayMap.bind(this));
     }
   };
 
@@ -32,7 +32,14 @@ function VicinityController($http) {
       animation: google.maps.Animation.BOUNCE
     });
     marker.setMap(map);
+
+    this.hideMapButton();
   };
+
+  this.hideMapButton = function() {
+    $('#map-button').hide();
+  };
+
 } // ends VicinityController
 
 // app.controller('VicinityController', function($http) {

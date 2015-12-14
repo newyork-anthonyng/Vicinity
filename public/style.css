@@ -5,3 +5,8 @@
   height: 4em;
   background-color: orange;
 }
+
+#map {
+  height: 15em;
+  width:50%;
+}
