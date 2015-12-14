@@ -47,7 +47,13 @@ function VicinityController($http) {
   };
 
   this.getCurrentWeather = function(latitude, longitude) {
-    alert('latitude: ' + latitude + ' longitude: ' + longitude);
+    // hit the route to get current weather
+    var myUrl = '/weather/find?location=' + latitude + ',' + longitude;
+
+    $http.get(myUrl)
+      .then(function(response) {
+        alert('Weather: ' + response.data.degrees + ', ' + response.data.description);
+      });
   };
 
 
