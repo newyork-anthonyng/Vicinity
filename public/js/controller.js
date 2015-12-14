@@ -52,21 +52,12 @@ function VicinityController($http) {
 
     $http.get(myUrl)
       .then((response) => {
-        this.displayWeather(response.data);
+        // this.displayWeather(response.data);
+        console.log(response.data);
+        alert('degrees: ' + response.data.degrees +
+              ' description: ' + response.data.description);
       });
   };
-
-  // *** Display weather information on page *** //
-  this.displayWeather = function(weatherInformation) {
-    var degrees     = weatherInformation['degrees'];
-    var description = weatherInformation['description'];
-    var weatherText = 'Current weather is ' + degrees + ', ' + description;
-
-    var myWeatherDiv = $('#weather');
-    var myInfo       = $('<p>' + weatherText + '</p>');
-    myWeatherDiv.empty().append(myInfo);
-  };
-
 } // ends VicinityController
 
 // app.controller('VicinityController', function($http) {
@@ -115,6 +106,17 @@ function VicinityController($http) {
 //       this.displayCategoriesInformation(this.categoriesInformation);
 //     });
 //   };
+//
+// // *** Display weather information on page *** //
+// this.displayWeather = function(weatherInformation) {
+//   var degrees     = weatherInformation['degrees'];
+//   var description = weatherInformation['description'];
+//   var weatherText = 'Current weather is ' + degrees + ', ' + description;
+//
+//   var myWeatherDiv = $('#weather');
+//   var myInfo       = $('<p>' + weatherText + '</p>');
+//   myWeatherDiv.empty().append(myInfo);
+// };
 //
 //   // *** Display Places information for all Categories onto DOM *** //
 //   this.displayCategoriesInformation = function(data) {
