@@ -70,6 +70,32 @@ function VicinityController($http) {
       var myCategory = $('<p>' + this.categories[i] + '</p>');
       categoriesDiv.append(myCategory);
     }
+
+    var deferreds = [];
+
+    for(var i = 0, j = this.categories.length; i < j; i++) {
+      var myCurrentCategory = this.categories[i];
+      var myUrl = '/places/find?location=' + this.currentLatitude + ',' +
+                  this.currentLongitude + '&type=' + myCurrentCategory;
+
+      var newRequest =
+        $.ajax({
+          url: myUrl
+        }).done(function(response) {
+          // check if there's a place name
+          if(response.name) {
+            var myText = response.name;
+            alert(myText);
+          }
+        });
+
+      deferreds.push(newRequest);
+    }   // end of for-loop
+
+    $.when.apply($, deferreds).done(function() {
+      alert('all ajax requests done');
+    });
+
   };
 
 } // ends VicinityController

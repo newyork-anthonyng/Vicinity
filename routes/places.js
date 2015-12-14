@@ -37,6 +37,8 @@ function findPlace(req, res) {
   let myUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' +
   myLocation + '&radius=1000&types=' + myType + '&key=' + process.env.GOOGLE_PLACES_API_KEY;
 
+  console.log(myUrl);
+  
   request(myUrl, (error, response, body) => {
     if(!error && response.statusCode == 200) {
       let jsonData = JSON.parse(body)['results'][0];
