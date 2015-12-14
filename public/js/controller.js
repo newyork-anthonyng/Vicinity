@@ -40,24 +40,12 @@ function VicinityController($http) {
 
     // hide the map button, and show current weather
     this.hideMapButton();
-    this.getCurrentWeather(this.currentLatitude, this.currentLongitude);
   };
 
   this.hideMapButton = function() {
     $('#map-button').hide();
   };
 
-  this.getCurrentWeather = function(latitude, longitude) {
-    var myUrl = '/weather/find?location='+ latitude + ',' + longitude;
-
-    $http.get(myUrl)
-      .then((response) => {
-        // this.displayWeather(response.data);
-        console.log(response.data);
-        alert('degrees: ' + response.data.degrees +
-              ' description: ' + response.data.description);
-      });
-  };
 } // ends VicinityController
 
 // app.controller('VicinityController', function($http) {
@@ -117,6 +105,19 @@ function VicinityController($http) {
 //   var myInfo       = $('<p>' + weatherText + '</p>');
 //   myWeatherDiv.empty().append(myInfo);
 // };
+
+// this.getCurrentWeather = function(latitude, longitude) {
+//   var myUrl = '/weather/find?location='+ latitude + ',' + longitude;
+//
+//   $http.get(myUrl)
+//     .then((response) => {
+//       // this.displayWeather(response.data);
+//       console.log(response.data);
+//       alert('degrees: ' + response.data.degrees +
+//             ' description: ' + response.data.description);
+//     });
+// };
+
 //
 //   // *** Display Places information for all Categories onto DOM *** //
 //   this.displayCategoriesInformation = function(data) {
