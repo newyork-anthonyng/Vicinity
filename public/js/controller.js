@@ -97,7 +97,21 @@ function VicinityController($http) {
   };
 
   this.displayCategoriesInformation = function(data) {
-    alert(data.type);
+    var newCategoryDiv = $('<div class="category-place"></div>');
+
+    // add header first
+    var myHeader = $('<h4>' + data.type + '</h4>');
+    newCategoryDiv.append(myHeader);
+
+    // add all other keys
+    for(var key in data) {
+      if(key === 'type') continue;
+
+      var newItem = $('<p>' + key + ': ' + data[key] + '</p>');
+      newCategoryDiv.append(newItem);
+    }
+
+    $('#categories').append(newCategoryDiv);
   };
 
 } // ends VicinityController
