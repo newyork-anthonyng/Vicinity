@@ -78,22 +78,23 @@ function VicinityController($http) {
       var myUrl = '/places/find?location=' + this.currentLatitude + ',' +
                   this.currentLongitude + '&type=' + myCurrentCategory;
 
+      var self = this;
       var newRequest =
         $.ajax({
           url: myUrl
         }).done(function(response) {
-          // check if there's a place name
-          if(response.name) {
-            var myText = response.type + ': ' + response.name;
-            alert(myText);
-          }
+          // update controller's myCategoriesInformation
+          self.categoriesInformation[response.type] = response;
         });
 
       deferreds.push(newRequest);
     }   // end of for-loop
 
+    var self = this;
     $.when.apply($, deferreds).done(function() {
-      alert('all ajax requests done');
+      for(var key in self.categoriesInformation) {
+        alert(key + ': ' + self.categoriesInformation[key]['name']);
+      }
     });
 
   };
