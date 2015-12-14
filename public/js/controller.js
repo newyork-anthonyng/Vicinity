@@ -38,24 +38,27 @@ function VicinityController($http) {
     });
     marker.setMap(map);
 
-    this.hideMapButton();
-    this.getCurrentWeather(10, 10);
-  };
-
-  this.hideMapButton = function() {
     $('#map-button').hide();
+    this.getCurrentWeather(this.currentLatitude, this.currentLongitude);
   };
 
   this.getCurrentWeather = function(latitude, longitude) {
-    // hit the route to get current weather
     var myUrl = '/weather/find?location=' + latitude + ',' + longitude;
+
+    var displayWeather = function(degrees, description) {
+      var weatherDiv = $('#weather');
+      var myText     = 'Current weather: ' + degrees + ' & ' + description;
+      weatherDiv.append(myText);
+    };
 
     $http.get(myUrl)
       .then(function(response) {
-        alert('Weather: ' + response.data.degrees + ', ' + response.data.description);
+        var myDegrees     = response.data.degrees;
+        var myDescription = response.data.description;
+
+        displayWeather(myDegrees, myDescription);
       });
   };
-
 
 } // ends VicinityController
 
