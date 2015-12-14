@@ -13,15 +13,20 @@ function VicinityController($http) {
 
   this.getCurrentLocation = function() {
     if(navigator && navigator.geolocation) {
+      // use .bind(this) to be able to access Controller variables
       navigator.geolocation.getCurrentPosition(this.displayMap.bind(this));
     }
   };
 
+  // *** Display map on DOM *** //
   this.displayMap = function(position) {
-    var myCenter = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    this.currentLatitude  = position.coords.latitude;
+    this.currentLongitude = position.coords.longitude;
+
+    var myCenter = new google.maps.LatLng(this.currentLatitude, this.currentLongitude);
     var mapProp = {
       center: myCenter,
-      zoom: 16,
+      zoom: 15,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
@@ -33,21 +38,38 @@ function VicinityController($http) {
     });
     marker.setMap(map);
 
+    // hide the map button, and show current weather
     this.hideMapButton();
+    this.getCurrentWeather(this.currentLatitude, this.currentLongitude);
   };
 
   this.hideMapButton = function() {
     $('#map-button').hide();
   };
 
+  this.getCurrentWeather = function(latitude, longitude) {
+    var myUrl = '/weather/find?location='+ latitude + ',' + longitude;
+
+    $http.get(myUrl)
+      .then((response) => {
+        this.displayWeather(response.data);
+      });
+  };
+
+  // *** Display weather information on page *** //
+  this.displayWeather = function(weatherInformation) {
+    var degrees     = weatherInformation['degrees'];
+    var description = weatherInformation['description'];
+    var weatherText = 'Current weather is ' + degrees + ', ' + description;
+
+    var myWeatherDiv = $('#weather');
+    var myInfo       = $('<p>' + weatherText + '</p>');
+    myWeatherDiv.empty().append(myInfo);
+  };
+
 } // ends VicinityController
 
 // app.controller('VicinityController', function($http) {
-//   this.test = function() {
-//     alert('Button pressed');
-//   };
-//
-
 //
 //   // object will have keys of the categories, and values will be objects that
 //   // contain Places information retrieved from '/places/find' route
@@ -64,51 +86,6 @@ function VicinityController($http) {
 //                         Please make sure to enable location services.</p>');
 //       myMap.append(errorMessage);
 //     }
-//   };
-//
-//   // *** Display location onto map *** //
-//   this.displayPositionOnMap = function(position) {
-//     // get coordinates and save into controller
-//     var myLatitude  = position.coords.latitude;
-//     var myLongitude = position.coords.longitude;
-//     this.currentLatitude  = myLatitude;
-//     this.currentLongitude = myLongitude;
-//
-//     this.getCurrentWeather(myLatitude, myLongitude);
-//
-//     // create map and with marker on current location
-//     var center = new google.maps.LatLng(myLatitude, myLongitude);
-//
-//     var mapProp = {
-//       center:    center,
-//       zoom:      16,
-//       mapTypeId: google.maps.MapTypeId.ROADMAP
-//     };
-//
-//     var myMap  = $('#current-location-map')[0];
-//     var map    = new google.maps.Map(myMap, mapProp);
-//     var marker = new google.maps.Marker({ position: center });
-//     marker.setMap(map);
-//   };
-//
-//   this.getCurrentWeather = function(latitude, longitude) {
-//     var myUrl = '/weather/find?location='+ latitude + ',' + longitude;
-//
-//     $http.get(myUrl)
-//       .then((response) => {
-//         this.displayWeather(response.data);
-//       });
-//   };
-//
-//   // *** Display weather information on page *** //
-//   this.displayWeather = function(weatherInformation) {
-//     var degrees     = weatherInformation['degrees'];
-//     var description = weatherInformation['description'];
-//     var weatherText = 'Current weather is ' + degrees + ', ' + description;
-//
-//     var myWeatherDiv = $('#current-temperature');
-//     var myInfo       = $('<p>' + weatherText + '</p>');
-//     myWeatherDiv.empty().append(myInfo);
 //   };
 //
 //   // *** Get Places information for all Categories *** //
