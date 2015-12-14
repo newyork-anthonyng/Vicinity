@@ -14,3 +14,11 @@
 #weather {
   font-size:2em;
 }
+
+#categories-button {
+  color: black;
+  font-size:2em;
+  width: 4em;
+  height: 4em;
+  background-color: yellow;
+}

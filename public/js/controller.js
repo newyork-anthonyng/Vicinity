@@ -11,6 +11,8 @@ function VicinityController($http) {
                      'liquor_store', 'museum', 'park', 'restaurant',
                      'shopping_mall', 'points_of_interest'];
 
+  this.categoriesInformation = {};
+
   this.getCurrentLocation = function() {
     if(navigator && navigator.geolocation) {
       // use .bind(this) to be able to access Controller variables
@@ -60,6 +62,16 @@ function VicinityController($http) {
       });
   };
 
+  this.getCategoriesInformation = function() {
+    // test code. Display all of the categories information onto DOM
+    var categoriesDiv = $('#categories').empty();
+
+    for(var i = 0, j = this.categories.length; i < j; i++) {
+      var myCategory = $('<p>' + this.categories[i] + '</p>');
+      categoriesDiv.append(myCategory);
+    }
+  };
+
 } // ends VicinityController
 
 // app.controller('VicinityController', function($http) {
@@ -67,19 +79,6 @@ function VicinityController($http) {
 //   // object will have keys of the categories, and values will be objects that
 //   // contain Places information retrieved from '/places/find' route
 //   this.categoriesInformation = {};
-//
-//   // *** use browser to get current location *** //
-//   this.getCurrentLocation = function() {
-//     if(navigator.geolocation) {
-//       // use .bind(this) to be able to access Controller variables
-//       navigator.geolocation.getCurrentPosition(this.displayPositionOnMap.bind(this));
-//     } else {
-//       var myMap = $('#current-location-map');
-//       var errorMessage = $('<p>Geolocation is not supported by this browser. \
-//                         Please make sure to enable location services.</p>');
-//       myMap.append(errorMessage);
-//     }
-//   };
 //
 //   // *** Get Places information for all Categories *** //
 //   this.getCategoriesInformation = function() {
