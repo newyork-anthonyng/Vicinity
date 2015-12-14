@@ -23,10 +23,20 @@ function VicinityController($http) {
   };
 
   this.displayMap = function(position) {
-    var myText = 'latitude: ' + position.coords.latitude +
-                 'longitude: ' + position.coords.longitude;
+    var myCenter = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    var mapProp = {
+      center: myCenter,
+      zoom: 16,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
 
-    $('#map').empty().append($('<p>' + myText + '</p>'));
+    var map = new google.maps.Map($('#map')[0], mapProp);
+    
+    var marker = new google.maps.Marker({
+      position: myCenter,
+      animation: google.maps.Animation.BOUNCE
+    });
+    marker.setMap(map);
   };
 } // ends controller
 
