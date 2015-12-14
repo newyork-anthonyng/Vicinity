@@ -50,7 +50,7 @@ function VicinityController($http) {
     var displayWeather = function(degrees, description) {
       var weatherDiv = $('#weather');
       var myText     = 'Current weather: ' + degrees + ' & ' + description;
-      weatherDiv.append(myText);
+      weatherDiv.empty().append(myText);
     };
 
     $http.get(myUrl)
@@ -84,7 +84,7 @@ function VicinityController($http) {
         }).done(function(response) {
           // check if there's a place name
           if(response.name) {
-            var myText = response.name;
+            var myText = response.type + ': ' + response.name;
             alert(myText);
           }
         });
