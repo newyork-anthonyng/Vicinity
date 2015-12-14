@@ -99,11 +99,10 @@ function VicinityController($http) {
   this.displayCategoriesInformation = function(data) {
     var newCategoryDiv = $('<div class="category-place"></div>');
 
-    // add header first
+    // first, add header. Then, add all other keys to the div
     var myHeader = $('<h4>' + data.type + '</h4>');
     newCategoryDiv.append(myHeader);
 
-    // add all other keys
     for(var key in data) {
       if(key === 'type') continue;
 
@@ -112,6 +111,38 @@ function VicinityController($http) {
     }
 
     $('#categories').append(newCategoryDiv);
+  };
+
+  this.getTravelDistance = function() {
+    var deferreds = [];
+
+    var myOrigin = this.currentLatitude + ',' + this.currentLongitude;
+
+    // go through each categories-places and find the distance between the two
+    for(var key in this.categoriesInformation) {
+      var myCurrentCategory = this.categoriesInformation[key];
+
+      if(myCurrentCategory['latitude'] === undefined || myCurrentCategory['longitude'] === undefined) {
+        continue;
+      }
+
+      var myDestination = myCurrentCategory['latitude'] + ',' + myCurrentCategory['longitude'];
+      var myUrl = '/places/duration?origin=' + myOrigin + '&destination=' + myDestination;
+
+      var newRequest =
+        $.ajax({
+          url: myUrl
+        }).done(function(response) {
+          alert(response.distance + ', ' + response.duration);
+        });
+
+      deferreds.push(newRequest);
+    } // end of for-loop
+
+    $.when.apply($, deferreds).done(function() {
+      alert('all ajax calls are finished');
+    });
+
   };
 
 } // ends VicinityController
