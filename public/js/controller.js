@@ -115,26 +115,3 @@ function VicinityController($http) {
   };
 
 } // ends VicinityController
-
-// app.controller('VicinityController', function($http) {
-
-//   // *** Display Places information for all Categories onto DOM *** //
-//   this.displayCategoriesInformation = function(data) {
-//
-//     var placesContainer = $('#categories-places-information');
-//     placesContainer.empty();
-//
-//     for(var category in data) {
-//       var myPlace = $('<ul>' + category + '<ul>');
-//
-//       // go through each information in each category
-//       for(var placeInformation in data[category]) {
-//         myPlace.append($('<li>' + placeInformation + ': ' + data[category][placeInformation] + '</li>'));
-//       }
-//
-//       placesContainer.append(myPlace);
-//     }
-//   };
-//
-//   // this.getCurrentLocation();  // get location on page load
-// }); // end of VicinityController
