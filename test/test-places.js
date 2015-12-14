@@ -40,6 +40,7 @@ describe('Google Places API', () => {
       .get('/places/find?location=40.572966,-74.331664&type=bar')
       .end((err, res) => {
         res.body.should.have.a.property('name');
+        res.body.should.have.a.property('type');
         res.body.should.have.a.property('address');
         res.body.should.have.a.property('open_now');
         res.body.should.have.a.property('rating');
@@ -51,6 +52,8 @@ describe('Google Places API', () => {
 
         res.body.name.should.be.a('string');
         res.body.name.should.be.eq('Rasoi II Restaurant');
+        res.body.type.should.be.a('string');
+        res.body.type.should.be.eq('bar');
         res.body.address.should.be.a('string');
         res.body.picture_ref.should.be.a('string');
         res.body.link.should.be.a('string');
