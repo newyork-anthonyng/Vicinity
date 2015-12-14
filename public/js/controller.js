@@ -38,13 +38,18 @@ function VicinityController($http) {
     });
     marker.setMap(map);
 
-    // hide the map button, and show current weather
     this.hideMapButton();
+    this.getCurrentWeather(10, 10);
   };
 
   this.hideMapButton = function() {
     $('#map-button').hide();
   };
+
+  this.getCurrentWeather = function(latitude, longitude) {
+    alert('latitude: ' + latitude + ' longitude: ' + longitude);
+  };
+
 
 } // ends VicinityController
 
