@@ -4,17 +4,12 @@ var app = angular.module('Vicinity', []);
 app.controller('VicinityController', VicinityController);
 
 function VicinityController($http) {
-  this.test = function() {
-    $('#test').toggleClass('tap');
-  };
+  this.currentLatitude;
+  this.currentLongitude;
 
-  this.route = function() {
-    $http.get('/test')
-      .then(function(response) {
-        var messageDiv = $('#message');
-        messageDiv.empty().append('<p>' + response.data.MESSAGE + '</p>');
-      });
-  };
+  this.categories = ['bar', 'cafe', 'casino', 'convenience_store',
+                     'liquor_store', 'museum', 'park', 'restaurant',
+                     'shopping_mall', 'points_of_interest'];
 
   this.getCurrentLocation = function() {
     if(navigator && navigator.geolocation) {
@@ -38,19 +33,14 @@ function VicinityController($http) {
     });
     marker.setMap(map);
   };
-} // ends controller
+} // ends VicinityController
 
 // app.controller('VicinityController', function($http) {
 //   this.test = function() {
 //     alert('Button pressed');
 //   };
 //
-//   this.currentLatitude;
-//   this.currentLongitude;
-//
-//   this.categories = ['bar', 'cafe', 'casino', 'convenience_store',
-//                      'liquor_store', 'museum', 'park', 'restaurant',
-//                      'shopping_mall', 'points_of_interest'];
+
 //
 //   // object will have keys of the categories, and values will be objects that
 //   // contain Places information retrieved from '/places/find' route

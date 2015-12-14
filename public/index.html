@@ -18,6 +18,12 @@
   </head>
   <body ng-controller="VicinityController as controller">
     <h1>Vicinity</h1>
+    <br>
+    <ul>
+      <li ng-repeat="category in controller.categories">{{ category }}</li>
+    </ul>
+    <br>
+
     <div id="map-button" ng-click="controller.getCurrentLocation()">Get Map</div>
     <div id="map" style="width:500px;height:380px;"></div>
   </body>
