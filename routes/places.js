@@ -45,7 +45,11 @@ function findPlace(req, res) {
 
       // check if there are any results
       if(jsonData == undefined) {
-        res.json({ SUCCESS: false, MESSAGE: 'Zero Results Found' });
+        res.json({
+          SUCCESS: false,
+          MESSAGE: 'Zero Results Found',
+          type:    myType
+        });
         return false;
       }
 

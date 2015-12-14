@@ -29,6 +29,8 @@ describe('Google Places API', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.SUCCESS.should.be.false;
+        res.body.should.have.a.property('type');
+        res.body.type.should.eq('casino');
         res.body.should.have.a.property('MESSAGE');
         res.body.MESSAGE.should.eq('Zero Results Found');
         done();
