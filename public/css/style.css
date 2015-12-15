@@ -19,6 +19,7 @@ h1 {
   font-size: 6em;
   font-family: 'Hind', sans-serif;
   margin: 0.1em 0 0 0.2em;
+  display:inline-block;
 }
 
 #map {
@@ -54,11 +55,19 @@ h1 {
 }
 
 #main-button {
-  color:white;
-  font-size:2em;
-  width: 4em;
-  height: 4em;
-  background-color: orange;
+  background-color: #4786f1;
+  border-radius: 5%;
+  color: white;
+  font-size: 4em;
+  width: 7em;
+  height: 1.75em;
+  display: inline-block;
+  float: right;
+  margin: 0.5em;
+  text-align: center;
+  vertical-align: middle;
+
+  animation:wiggle infinite 2s ease-in-out;
 }
 
 #map-button {
@@ -83,4 +92,12 @@ h1 {
   width: 4em;
   height: 4em;
   background-color: yellow;
+}
+
+@keyframes wiggle {
+	/*0% {transform:rotate(4deg);}
+	50% {transform:rotate(-4deg);}
+	100% {transform:rotate(4deg);}*/
+  0% {transform: translate(0, 0);}
+  50% {transform: translate(0, -0.25em);}
 }
