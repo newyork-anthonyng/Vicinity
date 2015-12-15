@@ -89,9 +89,9 @@ function VicinityController($http) {
 
     $.when.apply($, deferreds).done(function() {
       // display information for each category
-      for(var key in self.categoriesInformation) {
-        self.displayCategoriesInformation(self.categoriesInformation[key]);
-      }
+      // for(var key in self.categoriesInformation) {
+      //   self.displayCategoriesInformation(self.categoriesInformation[key]);
+      // }
     });
 
   };
@@ -129,18 +129,28 @@ function VicinityController($http) {
       var myDestination = myCurrentCategory['latitude'] + ',' + myCurrentCategory['longitude'];
       var myUrl = '/places/duration?origin=' + myOrigin + '&destination=' + myDestination;
 
-      var newRequest =
+      var self = this;
+      (function getDistance (key) {
+
+        var newRequest =
         $.ajax({
           url: myUrl
         }).done(function(response) {
-          alert(response.distance + ', ' + response.duration);
+          // update the categoriesInformation array with new distance and duration keys
+          self.categoriesInformation[key]['distance'] = response['distance'];
+          self.categoriesInformation[key]['duration'] = response['duration'];
+          console.log(self.categoriesInformation[key]);
         });
 
-      deferreds.push(newRequest);
+        deferreds.push(newRequest);
+      })(key);
+
     } // end of for-loop
 
     $.when.apply($, deferreds).done(function() {
-      alert('all ajax calls are finished');
+      for(var key in self.categoriesInformation) {
+        self.displayCategoriesInformation(self.categoriesInformation[key]);
+      }
     });
 
   };
