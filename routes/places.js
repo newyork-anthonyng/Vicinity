@@ -105,15 +105,10 @@ function findDuration(req, res) {
               + originLocation + '&destinations=' + destinationLocation
               + '&mode=walking&key=' + process.env.GOOGLE_MAPS_API_KEY;
 
-  console.log(myUrl);
-
   request(myUrl, (error, response, body) => {
     if(!error && response.statusCode == 200) {
       let jsonData = JSON.parse(body)['rows'][0]['elements'][0];
 
-      console.log('inside of duration route');
-      console.log(jsonData);
-      console.log('------------------------');
       let duration = jsonData['duration']['value']; // in seconds
       let distance = jsonData['distance']['value']; // in kilometers
 

@@ -80,8 +80,22 @@ h1 {
   float: left;
 }
 
+.placeholder-image {
+  height: 400px;
+  width: 400px;
+  float: left;
+}
+
 .category-place-text {
   border:3px dashed purple;
   font-size: 2.25em;
   padding-left: 12em;
+}
+
+.open {
+  color: #30FF45;
+}
+
+.closed {
+  color: #FF3030;
 }

@@ -8,9 +8,10 @@ function VicinityController($http) {
   this.currentLongitude;
 
   // *** List of categories for Google Places Search *** //
-  this.categories = ['bar', 'cafe', 'casino', 'convenience_store',
-                     'liquor_store', 'museum', 'park', 'restaurant',
-                     'shopping_mall', 'points_of_interest'];
+  // this.categories = ['bar', 'cafe', 'casino', 'convenience_store',
+  //                    'liquor_store', 'museum', 'park', 'restaurant',
+  //                    'shopping_mall', 'points_of_interest'];
+  this.categories = ['bar'];
 
   this.categoriesInformation = {};
 
@@ -59,7 +60,7 @@ function VicinityController($http) {
     function displayWeather(degrees, description) {
       var weatherDiv = $('#weather');
       var myText     = 'Current Weather: ' + Math.ceil(degrees) +
-                       ' degrees, ' + description;
+                       ' °, ' + description;
 
       weatherDiv.empty().append(myText);
     };
@@ -111,24 +112,34 @@ function VicinityController($http) {
     for(var key in data) {
       switch(key) {
         case 'address':
-          var newItem = $('<p>' + data[key] + '</p>');
+          var newItem = $('<p>' + data['address'] + '</p>');
           newTextDiv.append(newItem);
           break;
         case 'open_now':
-          var newItem = $('<p>' + data[key] + '</p>');
-          newTextDiv.append(newItem);
+          if(data['open_now'] == true) {
+            var newItem = $('<p class="open">Open Now!</p>');
+            newTextDiv.append(newItem);
+          } else if(data['open_now'] == false) {
+            var newItem = $('<p class="closed">Closed</p>');
+            newTextDiv.append(newItem);
+          }
           break;
         case 'rating':
-          var newItem = $('<p>' + data[key] + '</p>');
+          var newItem = $('<p>' + data['rating'] + '</p>');
           newTextDiv.append(newItem);
           break;
         case 'price_level':
-          var newItem = $('<p>' + data[key] + '</p>');
+          var newItem = $('<p>' + data['price_level'] + '</p>');
           newTextDiv.append(newItem);
           break;
         case 'picture_ref':
-          var newImage = $('<img src=' + data[key] + '></img>');
-          newCategoryDiv.append(newItem);
+          if(data['picture_ref'] != 'not shown') {
+            var newImage = $('<img src=' + data['picture_ref'] + '></img>');
+            newCategoryDiv.append(newItem);
+          } else {
+            var placeHolderImage = $('<div class="placeholder-image"></div>');
+            newCategoryDiv.append(placeHolderImage);
+          }
           break;
         default:
           continue;
