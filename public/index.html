@@ -5,7 +5,8 @@
     <link rel="icon" href="./assets/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
 
-    <link rel="stylesheet" type="text/css" href="./style.css">
+    <link href='https://fonts.googleapis.com/css?family=Hind|Open+Sans:300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
     <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -17,11 +18,11 @@
 
   </head>
   <body ng-controller="VicinityController as controller">
-    <h1>Vicinity</h1>
-    <br>
-
-    <div id="map"></div>
-    <div id="weather"></div>
+    <div id="header">
+      <h1>Vicinity</h1>
+      <div id="map"></div>
+      <div id="weather"></div>
+    </div>
     <div id="map-button" ng-click="controller.getCurrentLocation()">Get Map</div>
     <div id="categories-button" ng-click="controller.getCategoriesInformation()">Get Categories</div>
     <div id="distance-button" ng-click="controller.getTravelDistance()">Get Distance</div>

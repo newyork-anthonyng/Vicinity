@@ -100,7 +100,7 @@ function VicinityController($http) {
     var newCategoryDiv = $('<div class="category-place"></div>');
 
     // first, add header. Then, add all other keys to the div
-    var myHeader = $('<h4>' + data.type + '</h4>');
+    var myHeader = $('<h4>' + data.type + '</h4><hr>');
     newCategoryDiv.append(myHeader);
 
     for(var key in data) {
