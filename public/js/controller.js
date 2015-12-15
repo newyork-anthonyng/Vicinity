@@ -7,6 +7,7 @@ function VicinityController($http) {
   this.currentLatitude;
   this.currentLongitude;
 
+  // *** List of categories for Google Places Search *** //
   this.categories = ['bar', 'cafe', 'casino', 'convenience_store',
                      'liquor_store', 'museum', 'park', 'restaurant',
                      'shopping_mall', 'points_of_interest'];
@@ -45,6 +46,7 @@ function VicinityController($http) {
     marker.setMap(map);
 
     $('#map-button').hide();
+    this.getCategoriesInformation();
     this.getCurrentWeather(this.currentLatitude, this.currentLongitude);
   };
 
@@ -53,7 +55,7 @@ function VicinityController($http) {
 
     var displayWeather = function(degrees, description) {
       var weatherDiv = $('#weather');
-      var myText     = 'Current weather: ' + degrees + ' & ' + description;
+      var myText     = 'Current Weather: ' + Math.ceil(degrees) + ' degrees, ' + description;
       weatherDiv.empty().append(myText);
     };
 
@@ -88,10 +90,7 @@ function VicinityController($http) {
     } // end of for-loop
 
     $.when.apply($, deferreds).done(function() {
-      // display information for each category
-      // for(var key in self.categoriesInformation) {
-      //   self.displayCategoriesInformation(self.categoriesInformation[key]);
-      // }
+      self.getTravelDistance();
     });
 
   };
@@ -139,7 +138,6 @@ function VicinityController($http) {
           // update the categoriesInformation array with new distance and duration keys
           self.categoriesInformation[key]['distance'] = response['distance'];
           self.categoriesInformation[key]['duration'] = response['duration'];
-          console.log(self.categoriesInformation[key]);
         });
 
         deferreds.push(newRequest);

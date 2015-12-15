@@ -28,7 +28,13 @@ h1 {
 }
 
 #weather {
-  font-size: 2.5em;
+  font-size: 2em;
+  font-style: italic;
+  font-weight: 300;
+}
+
+#body {
+  margin-top:46em;
 }
 
 /*** Category Place ***/
@@ -45,6 +51,14 @@ h1 {
 .category-place > hr {
   margin:0;
   width:20%;
+}
+
+#main-button {
+  color:white;
+  font-size:2em;
+  width: 4em;
+  height: 4em;
+  background-color: orange;
 }
 
 #map-button {
@@ -69,8 +83,4 @@ h1 {
   width: 4em;
   height: 4em;
   background-color: yellow;
-}
-
-#body {
-  margin-top:46em;
 }
