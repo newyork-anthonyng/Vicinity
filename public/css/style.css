@@ -1,9 +1,19 @@
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 1em;
+  margin: 0;
 }
 
 /*** Header ***/
+
+#header {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  background-color:rgba(255, 255, 255, 0.9);
+  border:1px solid green;
+}
 
 h1 {
   color: #4786f1;
@@ -59,4 +69,8 @@ h1 {
   width: 4em;
   height: 4em;
   background-color: yellow;
+}
+
+#body {
+  margin-top:46em;
 }
