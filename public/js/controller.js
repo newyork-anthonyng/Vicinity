@@ -115,6 +115,48 @@ function VicinityController($http) {
   this.getTravelDistance = function() {
     var deferreds = [];
 
+    // format time from 'seconds' to 'hh:mm'
+    function formatTime(seconds) {
+      var mySeconds = seconds;
+
+      var hours = Math.floor(seconds/3600);
+      mySeconds = Math.floor(mySeconds % 3600);
+
+      var minutes = Math.floor(mySeconds/60);
+
+      var hoursText;
+      if(hours == 0) {
+        hoursText = '';
+      } else if(hours == 1) {
+        hoursText = '1 hour';
+      } else {
+        hoursText = hours + ' hours';
+      }
+
+      var minutesText;
+      if(minutes == 0) {
+        minutesText = '';
+      } else if(minutes == 1) {
+        minutesText = '1 minute';
+      } else {
+        minutesText = minutes + ' minutes';
+      }
+
+      return hoursText + ' ' + minutesText + ' walking';
+    }
+
+    // format distance from 'meters' to 'miles'
+    function formatDistance(meters) {
+      var meterToMileConversion = 0.000621371;
+      var conversion = (meters * meterToMileConversion).toFixed(2);
+
+      if(conversion == 1.00) {
+        return conversion + ' mile';
+      } else {
+        return conversion + ' miles';
+      }
+    };
+
     var myOrigin = this.currentLatitude + ',' + this.currentLongitude;
 
     // go through each categories-places and find the distance between the two
@@ -135,9 +177,11 @@ function VicinityController($http) {
         $.ajax({
           url: myUrl
         }).done(function(response) {
-          // update the categoriesInformation array with new distance and duration keys
-          self.categoriesInformation[key]['distance'] = response['distance'];
-          self.categoriesInformation[key]['duration'] = response['duration'];
+          // update the categoriesInformation array with new travel key
+          var travelInformation =
+          self.categoriesInformation[key]['travel'] = formatDistance(response['distance']) + ', ' + formatTime(response['duration']);
+          // self.categoriesInformation[key]['distance'] = formatDistance(response['distance']);
+          // self.categoriesInformation[key]['duration'] = formatTime(response['duration']);
         });
 
         deferreds.push(newRequest);
