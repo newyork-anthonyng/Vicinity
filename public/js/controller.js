@@ -14,6 +14,7 @@ function VicinityController($http) {
 
   this.categoriesInformation = {};
 
+  // *** Use navigator.geolocation to retrieve coordinates *** //
   this.getCurrentLocation = function() {
     if(navigator && navigator.geolocation) {
       // use .bind(this) to be able to access Controller variables
@@ -37,7 +38,8 @@ function VicinityController($http) {
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
-    var map = new google.maps.Map($('#map')[0], mapProp);
+    var mapDiv = $('#map')[0];
+    var map    = new google.maps.Map(mapDiv, mapProp);
 
     var marker = new google.maps.Marker({
       position:  myCenter,
@@ -46,19 +48,23 @@ function VicinityController($http) {
     marker.setMap(map);
 
     $('#map-button').hide();
-    this.getCategoriesInformation();
     this.getCurrentWeather(this.currentLatitude, this.currentLongitude);
+    this.getCategoriesInformation();
   };
 
   this.getCurrentWeather = function(latitude, longitude) {
     var myUrl = '/weather/find?location=' + latitude + ',' + longitude;
 
-    var displayWeather = function(degrees, description) {
+
+    function displayWeather(degrees, description) {
       var weatherDiv = $('#weather');
-      var myText     = 'Current Weather: ' + Math.ceil(degrees) + ' degrees, ' + description;
+      var myText     = 'Current Weather: ' + Math.ceil(degrees) +
+                       ' degrees, ' + description;
+
       weatherDiv.empty().append(myText);
     };
 
+    // request weather information and display onto DOM
     $http.get(myUrl)
       .then(function(response) {
         var myDegrees     = response.data.degrees;
@@ -76,7 +82,7 @@ function VicinityController($http) {
       var myUrl = '/places/find?location=' + this.currentLatitude + ',' +
                   this.currentLongitude + '&type=' + myCurrentCategory;
 
-      // use 'self' to keep scope of this inside of AJAX call
+      // use 'self' to keep scope of 'this' inside AJAX call
       var self = this;
 
       var newRequest =
@@ -92,23 +98,45 @@ function VicinityController($http) {
     $.when.apply($, deferreds).done(function() {
       self.getTravelDistance();
     });
-
   };
 
   this.displayCategoriesInformation = function(data) {
     var newCategoryDiv = $('<div class="category-place"></div>');
 
-    // first, add header. Then, add all other keys to the div
-    var myHeader = $('<h4>' + data.type + '</h4><hr>');
+    var myHeader = $('<h2>' + data.type + '</h2><hr>');
     newCategoryDiv.append(myHeader);
 
+    var newTextDiv = $('<div></div>');
+
     for(var key in data) {
-      if(key === 'type') continue;
+      switch(key) {
+        case 'address':
+          var newItem = $('<p>' + data[key] + '</p>');
+          newTextDiv.append(newItem);
+          break;
+        case 'open_now':
+          var newItem = $('<p>' + data[key] + '</p>');
+          newTextDiv.append(newItem);
+          break;
+        case 'rating':
+          var newItem = $('<p>' + data[key] + '</p>');
+          newTextDiv.append(newItem);
+          break;
+        case 'price_level':
+          var newItem = $('<p>' + data[key] + '</p>');
+          newTextDiv.append(newItem);
+          break;
+        case 'picture_ref':
+          var newImage = $('<img src=' + data[key] + '></img>');
+          newCategoryDiv.append(newItem);
+          break;
+        default:
+          continue;
+          break;
+      };
+    }; // end of for-loop
 
-      var newItem = $('<p>' + key + ': ' + data[key] + '</p>');
-      newCategoryDiv.append(newItem);
-    }
-
+    newCategoryDiv.append(newTextDiv);
     $('#categories').append(newCategoryDiv);
   };
 
@@ -163,25 +191,26 @@ function VicinityController($http) {
     for(var key in this.categoriesInformation) {
       var myCurrentCategory = this.categoriesInformation[key];
 
-      if(myCurrentCategory['latitude'] === undefined || myCurrentCategory['longitude'] === undefined) {
-        continue;
-      }
+      var missingLocation = myCurrentCategory['latitude'] === undefined ||
+                            myCurrentCategory['longitude'] === undefined;
+      if(missingLocation) continue;
 
-      var myDestination = myCurrentCategory['latitude'] + ',' + myCurrentCategory['longitude'];
-      var myUrl = '/places/duration?origin=' + myOrigin + '&destination=' + myDestination;
+      var myDestination = myCurrentCategory['latitude'] + ',' +
+                          myCurrentCategory['longitude'];
+      var myUrl = '/places/duration?origin=' + myOrigin + '&destination=' +
+                  myDestination;
 
       var self = this;
-      (function getDistance (key) {
 
+      (function getDistance (key) {
         var newRequest =
         $.ajax({
           url: myUrl
         }).done(function(response) {
           // update the categoriesInformation array with new travel key
-          var travelInformation =
-          self.categoriesInformation[key]['travel'] = formatDistance(response['distance']) + ', ' + formatTime(response['duration']);
-          // self.categoriesInformation[key]['distance'] = formatDistance(response['distance']);
-          // self.categoriesInformation[key]['duration'] = formatTime(response['duration']);
+          var travelInformation = formatDistance(response['distance']) + ', ' +
+                                  formatTime(response['duration']);
+          self.categoriesInformation[key]['travel'] = travelInformation;
         });
 
         deferreds.push(newRequest);
@@ -194,7 +223,5 @@ function VicinityController($http) {
         self.displayCategoriesInformation(self.categoriesInformation[key]);
       }
     });
-
   };
-
 } // ends VicinityController
