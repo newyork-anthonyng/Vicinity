@@ -9,17 +9,26 @@ body {
 #header {
   position: fixed;
   top: 0;
-  z-index: 1;
   width: 100%;
-  background-color:rgba(255, 255, 255, 0.9);
+  z-index: 1;
+  background-color:rgba(255, 255, 255, 0.8);
 }
 
 h1 {
-  color: #4786f1;
+  display:inline-block;
   font-size: 6em;
   font-family: 'Hind', sans-serif;
-  margin: 0.1em 0 0 0.2em;
-  display:inline-block;
+  margin: 0.1em 0.4em 0 0.4em;
+}
+
+#title {
+  color: #4786f1;
+}
+
+#main-button {
+  color: #f18b47;
+  animation: blinking normal 2s infinite ease-in-out;
+  float: right;
 }
 
 #map {
@@ -38,18 +47,6 @@ h1 {
   margin-top:46em;
 }
 
-#main-button {
-  color: #f18b47;
-  font-size: 4em;
-  width: 7em;
-  height: 1.75em;
-  display: inline-block;
-  float: right;
-  margin: 0.5em;
-
-  animation:blinking normal 2s infinite ease-in-out
-}
-
 @keyframes blinking {
   0% {opacity: 1;}
   50% {opacity: .25;}
@@ -63,8 +60,8 @@ h1 {
 }
 
 .category-place > h2 {
-  font-size:4em;
   color: #4786f1;
+  font-size:4em;
   margin-bottom: 0.25em;
 }
 
@@ -74,6 +71,12 @@ h1 {
   background: #4786f1;
   width: 30%;
   margin: 0 0 1em 0;
+}
+
+.category-place-text {
+  border:3px dashed purple;
+  font-size: 2.25em;
+  padding-left: 12em;
 }
 
 .category-place > img {
@@ -86,12 +89,7 @@ h1 {
   float: left;
 }
 
-.category-place-text {
-  border:3px dashed purple;
-  font-size: 2.25em;
-  padding-left: 12em;
-}
-
+/*** Formatting for Open_Now ***/
 .open {
   color: #30FF45;
 }

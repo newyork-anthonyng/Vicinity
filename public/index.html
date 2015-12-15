@@ -2,25 +2,33 @@
 <html ng-app="Vicinity">
   <head>
     <meta charset="utf-8">
+    <!-- favicon -->
     <link rel="icon" href="./assets/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" type="text/css" href="./css/style.css">
     <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+
+    <!-- External Libraries -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-
     <script src="./scripts/angular.js"></script>
+
+
     <script src="./js/controller.js"></script>
     <title>Vicinity</title>
   </head>
 
   <body ng-controller="VicinityController as controller">
     <div id="header">
-      <h1>Vicinity</h1>
-      <div id="main-button" ng-click="controller.getCurrentLocation()">Press Me</div>
+      <h1 id="title">Vicinity</h1>
+      <h1 id="main-button" ng-click="controller.getCurrentLocation()">Press Me</h1>
       <div id="map"></div>
       <div id="weather"></div>
     </div>
@@ -29,8 +37,5 @@
       <div id="categories"></div>
     </div>
 
-    <br>
-  </body>
-  <body>
   </body>
 </html>
