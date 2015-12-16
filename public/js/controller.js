@@ -17,6 +17,10 @@ function VicinityController($http) {
 
   // *** Use navigator.geolocation to retrieve coordinates *** //
   this.getCurrentLocation = function() {
+    // show loading animation
+    $('#loading-animation').show();
+    $('#main-button').hide();
+    
     if(navigator && navigator.geolocation) {
       // use .bind(this) to be able to access Controller variables
       navigator.geolocation.getCurrentPosition(this.displayMap.bind(this));
@@ -48,7 +52,6 @@ function VicinityController($http) {
     });
     marker.setMap(map);
 
-    $('#main-button').hide();
     this.getCurrentWeather(this.currentLatitude, this.currentLongitude);
     this.getCategoriesInformation();
   };

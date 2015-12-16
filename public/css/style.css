@@ -97,3 +97,23 @@ h1 {
 .closed {
   color: #FF3030;
 }
+
+#loading-animation {
+  display: none;
+  width: 10em;
+  height: 10em;
+  margin: 10em auto;
+  background-color: #4786f1;
+
+  border-radius: 100%;
+  animation: blip 1.0s infinite ease-in-out;
+}
+
+@keyframes blip {
+  0% {
+    transform: scale(0);
+  } 100% {
+    transform: scale(1.0);
+    opacity: 0;
+  }
+}
