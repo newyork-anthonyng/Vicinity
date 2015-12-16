@@ -8,10 +8,9 @@ function VicinityController($http) {
   this.currentLongitude;
 
   // *** List of categories for Google Places Search *** //
-  // this.categories = ['bar', 'cafe', 'casino', 'convenience_store',
-  //                    'liquor_store', 'museum', 'park', 'restaurant',
-  //                    'shopping_mall', 'points_of_interest'];
-  this.categories = ['bar'];
+  this.categories = ['bar', 'cafe', 'casino', 'convenience_store',
+                     'liquor_store', 'museum', 'park', 'restaurant',
+                     'shopping_mall', 'points_of_interest'];
 
   this.categoriesInformation = {};
 
@@ -20,6 +19,7 @@ function VicinityController($http) {
     // show loading animation
     $('#loading-animation').show();
     $('#main-button').hide();
+    $('#summary').hide();
 
     if(navigator && navigator.geolocation) {
       // use .bind(this) to be able to access Controller variables
@@ -127,6 +127,14 @@ function VicinityController($http) {
 
     var newTextDiv = $('<div></div>');
 
+    if(data['name'] == undefined) {
+      var newItem = $('<p>None Found</p>');
+      newTextDiv.append(newItem);
+      newCategoryDiv.append(newTextDiv);
+      $('#categories').append(newCategoryDiv);
+      return true;
+    }
+
     // name
     var newItem = $('<p class="name">' + data['name'] + '</p>');
     newTextDiv.append(newItem);
@@ -144,8 +152,10 @@ function VicinityController($http) {
       newTextDiv.append(newItem);
     }
     // Rating
-    newItem = $('<p>Rating: ' + data['rating'] + '/5</p>');
-    newTextDiv.append(newItem);
+    if(data['rating'] != undefined) {
+      newItem = $('<p>Rating: ' + data['rating'] + '/5</p>');
+      newTextDiv.append(newItem);
+    }
     // price
     if(data['price_level'] != 'not shown') {
       newItem = $('<p>Price: ' + data['price_level'] + '/5</p>');
