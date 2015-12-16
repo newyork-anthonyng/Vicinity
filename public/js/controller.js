@@ -48,7 +48,7 @@ function VicinityController($http) {
     });
     marker.setMap(map);
 
-    $('#map-button').hide();
+    $('#main-button').hide();
     this.getCurrentWeather(this.currentLatitude, this.currentLongitude);
     this.getCategoriesInformation();
   };
@@ -60,7 +60,7 @@ function VicinityController($http) {
     function displayWeather(degrees, description) {
       var weatherDiv = $('#weather');
       var myText     = 'Current Weather: ' + Math.ceil(degrees) +
-                       ' °, ' + description;
+                       '°, ' + description;
 
       weatherDiv.empty().append(myText);
     };
@@ -231,6 +231,8 @@ function VicinityController($http) {
 
     $.when.apply($, deferreds).done(function() {
       for(var key in self.categoriesInformation) {
+        // hide the loading animation and show category information
+        $('#loading-animation').hide();
         self.displayCategoriesInformation(self.categoriesInformation[key]);
       }
     });
