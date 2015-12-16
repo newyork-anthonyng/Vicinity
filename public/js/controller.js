@@ -20,7 +20,7 @@ function VicinityController($http) {
     // show loading animation
     $('#loading-animation').show();
     $('#main-button').hide();
-    
+
     if(navigator && navigator.geolocation) {
       // use .bind(this) to be able to access Controller variables
       navigator.geolocation.getCurrentPosition(this.displayMap.bind(this));
@@ -107,13 +107,39 @@ function VicinityController($http) {
   this.displayCategoriesInformation = function(data) {
     var newCategoryDiv = $('<div class="category-place"></div>');
 
-    var myHeader = $('<h2>' + data.type + '</h2><hr>');
+    // format header to remove the underscores and capitalize all words
+    function formatHeader(header) {
+      var wordArray = header.split('_');
+
+      for(var i = 0, j = wordArray.length; i < j; i++) {
+        var newWord = wordArray[i][0].toUpperCase() + wordArray[i].substring(1);
+        wordArray[i] = newWord;
+      }
+
+      var formattedHeader = wordArray.join(' ');
+      return formattedHeader;
+    };
+
+    var myHeaderText = formatHeader(data.type);
+
+    var myHeader = $('<h2>' + myHeaderText + '</h2><hr>');
     newCategoryDiv.append(myHeader);
 
     var newTextDiv = $('<div></div>');
 
+    // name
+    // address
+    // open_now
+    // Rating
+    // price
+    // travel
+
     for(var key in data) {
       switch(key) {
+        case 'name':
+          var newItem = $('<p>' + data['name'] + '</p>');
+          newTextDiv.append(newItem);
+          break;
         case 'address':
           var newItem = $('<p>' + data['address'] + '</p>');
           newTextDiv.append(newItem);
@@ -128,11 +154,17 @@ function VicinityController($http) {
           }
           break;
         case 'rating':
-          var newItem = $('<p>' + data['rating'] + '</p>');
+          var newItem = $('<p>Rating: ' + data['rating'] + '/5</p>');
           newTextDiv.append(newItem);
           break;
         case 'price_level':
-          var newItem = $('<p>' + data['price_level'] + '</p>');
+          if(data['price_level'] != 'not shown') {
+            var newItem = $('<p>Price: ' + data['price_level'] + '/5</p>');
+            newTextDiv.append(newItem);
+          }
+          break;
+        case 'travel':
+          var newItem = $('<p>Travel: ' + data['travel'] + '</p>');
           newTextDiv.append(newItem);
           break;
         case 'picture_ref':
