@@ -128,59 +128,32 @@ function VicinityController($http) {
     var newTextDiv = $('<div></div>');
 
     // name
-    // address
-    // open_now
-    // Rating
-    // price
-    // travel
+    var newItem = $('<p>' + data['name'] + '</p>');
+    newTextDiv.append(newItem);
 
-    for(var key in data) {
-      switch(key) {
-        case 'name':
-          var newItem = $('<p>' + data['name'] + '</p>');
-          newTextDiv.append(newItem);
-          break;
-        case 'address':
-          var newItem = $('<p>' + data['address'] + '</p>');
-          newTextDiv.append(newItem);
-          break;
-        case 'open_now':
-          if(data['open_now'] == true) {
-            var newItem = $('<p class="open">Open Now!</p>');
-            newTextDiv.append(newItem);
-          } else if(data['open_now'] == false) {
-            var newItem = $('<p class="closed">Closed</p>');
-            newTextDiv.append(newItem);
-          }
-          break;
-        case 'rating':
-          var newItem = $('<p>Rating: ' + data['rating'] + '/5</p>');
-          newTextDiv.append(newItem);
-          break;
-        case 'price_level':
-          if(data['price_level'] != 'not shown') {
-            var newItem = $('<p>Price: ' + data['price_level'] + '/5</p>');
-            newTextDiv.append(newItem);
-          }
-          break;
-        case 'travel':
-          var newItem = $('<p>Travel: ' + data['travel'] + '</p>');
-          newTextDiv.append(newItem);
-          break;
-        case 'picture_ref':
-          if(data['picture_ref'] != 'not shown') {
-            var newImage = $('<img src=' + data['picture_ref'] + '></img>');
-            newCategoryDiv.append(newItem);
-          } else {
-            var placeHolderImage = $('<div class="placeholder-image"></div>');
-            newCategoryDiv.append(placeHolderImage);
-          }
-          break;
-        default:
-          continue;
-          break;
-      };
-    }; // end of for-loop
+    // address
+    newItem = $('<p>' + data['address'] + '</p>');
+    newTextDiv.append(newItem);
+
+    // open_now
+    if(data['open_now'] == true) {
+      newItem = $('<p class="open">Open Now!</p>');
+      newTextDiv.append(newItem);
+    } else if(data['open_now'] == false) {
+      newItem = $('<p class="closed">Closed</p>');
+      newTextDiv.append(newItem);
+    }
+    // Rating
+    newItem = $('<p>Rating: ' + data['rating'] + '/5</p>');
+    newTextDiv.append(newItem);
+    // price
+    if(data['price_level'] != 'not shown') {
+      newItem = $('<p>Price: ' + data['price_level'] + '/5</p>');
+      newTextDiv.append(newItem);
+    }
+    // travel
+    newItem = $('<p>Travel: ' + data['travel'] + '</p>');
+    newTextDiv.append(newItem);
 
     newCategoryDiv.append(newTextDiv);
     $('#categories').append(newCategoryDiv);
