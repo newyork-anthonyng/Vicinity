@@ -120,3 +120,8 @@ h1 {
     opacity: 0;
   }
 }
+
+.name {
+  font-size: 1.5em;
+  margin-bottom: 0;
+}

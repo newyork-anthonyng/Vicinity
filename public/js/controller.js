@@ -128,7 +128,7 @@ function VicinityController($http) {
     var newTextDiv = $('<div></div>');
 
     // name
-    var newItem = $('<p>' + data['name'] + '</p>');
+    var newItem = $('<p class="name">' + data['name'] + '</p>');
     newTextDiv.append(newItem);
 
     // address
